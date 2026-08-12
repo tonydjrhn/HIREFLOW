@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HireFlow - Applications</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172b4d;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 28px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: 800;
+            color: #6546f5;
+        }
+
+        .dashboard-btn {
+            background: white;
+            border: 1px solid #dbe2ea;
+            border-radius: 12px;
+            padding: 13px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #172b4d;
+            cursor: pointer;
+        }
+
+        .dashboard-btn:hover {
+            background: #f5f3ff;
+        }
+
+        main {
+            max-width: 1250px;
+            margin: 50px auto;
+            padding: 0 25px;
+        }
+
+        h1 {
+            font-size: 46px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #5f7696;
+            font-size: 19px;
+            margin-bottom: 38px;
+        }
+
+        .filters {
+            background: white;
+            border: 1px solid #e0e6ef;
+            border-radius: 20px;
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr auto;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #d8e0eb;
+            border-radius: 11px;
+            font-size: 16px;
+            background: white;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #6546f5;
+        }
+
+        .search-btn {
+            border: none;
+            background: #6546f5;
+            color: white;
+            padding: 0 28px;
+            border-radius: 11px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background: #5435df;
+        }
+
+        .clear {
+            color: #6546f5;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title h2 {
+            font-size: 30px;
+        }
+
+        .connection {
+            font-weight: 700;
+        }
+
+        .connected {
+            color: #16a34a;
+        }
+
+        .not-connected {
+            color: #dc2626;
+        }
+
+        #applications {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .application-card {
+            background: white;
+            border: 1px solid #e0e6ef;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .candidate-name {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .job-title {
+            color: #6546f5;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            color: #657b99;
+            font-size: 17px;
+        }
+
+        .status-badge {
+            height: fit-content;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .status-applied {
+            background: #eef2ff;
+            color: #4f46e5;
+        }
+
+        .status-shortlisted {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+
+        .status-rejected {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .status-hired {
+            background: #ecfdf5;
+            color: #059669;
+        }
+
+        .details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .detail {
+            background: #f5f7fb;
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: #526987;
+        }
+
+        .cover {
+            background: #f8fafc;
+            border-radius: 13px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .cover-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .cover-text {
+            color: #657b99;
+            line-height: 1.6;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .actions label {
+            font-weight: 700;
+        }
+
+        .status-select {
+            width: 190px;
+            padding: 12px;
+        }
+
+        .update-btn {
+            background: #6546f5;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .update-btn:hover {
+            background: #5435df;
+        }
+
+        .update-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            text-align: center;
+            background: white;
+            border: 1px solid #e0e6ef;
+            border-radius: 20px;
+            padding: 60px 20px;
+            color: #607797;
+            font-size: 18px;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        @media (max-width: 900px) {
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .search-btn {
+                padding: 15px;
+            }
+
+            .top-row {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 38px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HireFlow</div>
+
+    <button class="dashboard-btn" onclick="goDashboard()">
+        ← Dashboard
+    </button>
+</header>
+
+<main>
+
+    <h1>Applications</h1>
+
+    <p class="subtitle">
+        View and manage candidates who have applied to your jobs.
+    </p>
+
+    <div class="filters">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search candidate or job..."
+        >
+
+        <select id="statusFilter">
+            <option value="">All statuses</option>
+            <option value="Applied">Applied</option>
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Hired">Hired</option>
+        </select>
+
+        <select id="sortFilter">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+        </select>
+
+        <button class="search-btn" onclick="filterApplications()">
+            Search
+        </button>
+
+    </div>
+
+    <div class="clear" onclick="clearFilters()">
+        Clear filters
+    </div>
+
+    <div class="section-title">
+
+        <h2>Candidate Applications</h2>
+
+        <div id="connectionStatus" class="connection">
+            Connecting...
+        </div>
+
+    </div>
+
+    <div id="applications">
+
+        <div class="message">
+            Loading applications...
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+
+    const API_URL = "http://localhost:5000";
+
+    let allApplications = [];
+
+    // --------------------------------------------------
+    // DASHBOARD
+    // --------------------------------------------------
+
+    function goDashboard() {
+        window.location.href = "recruiter-dashboard.html";
+    }
+
+    // --------------------------------------------------
+    // LOAD APPLICATIONS
+    // --------------------------------------------------
+
+    async function loadApplications() {
+
+        const container = document.getElementById("applications");
+        const connection = document.getElementById("connectionStatus");
+
+        try {
+
+            const response = await fetch(`${API_URL}/api/applications`);
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Unable to load applications");
+            }
+
+            allApplications = data.applications || data || [];
+
+            connection.textContent = "Connected";
+            connection.className = "connection connected";
+
+            renderApplications(allApplications);
+
+        } catch (error) {
+
+            console.error(error);
+
+            connection.textContent = "Not connected";
+            connection.className = "connection not-connected";
+
+            container.innerHTML = `
+                <div class="message error">
+                    <strong>Unable to load applications</strong>
+                    <br><br>
+                    ${error.message}
+                </div>
+            `;
+        }
+    }
+
+    // --------------------------------------------------
+    // GET VALUE SAFELY
+    // --------------------------------------------------
+
+    function getCandidateName(application) {
+
+        if (application.candidateId) {
+
+            if (typeof application.candidateId === "object") {
+
+                return (
+                    application.candidateId.name ||
+                    application.candidateId.fullName ||
+                    application.candidateId.username ||
+                    "Candidate"
+                );
+
+            }
+
+        }
+
+        return application.candidateName || "Candidate";
+    }
+
+    function getCandidateEmail(application) {
+
+        if (application.candidateId) {
+
+            if (typeof application.candidateId === "object") {
+
+                return (
+                    application.candidateId.email ||
+                    "Email not available"
+                );
+
+            }
+        }
+
+        return application.email || "Email not available";
+    }
+
+    function getJobTitle(application) {
+
+        if (application.jobId) {
+
+            if (typeof application.jobId === "object") {
+
+                return (
+                    application.jobId.title ||
+                    "Job"
+                );
+
+            }
+
+        }
+
+        return application.jobTitle || "Job";
+    }
+
+    function getCompany(application) {
+
+        if (application.jobId) {
+
+            if (typeof application.jobId === "object") {
+
+                return (
+                    application.jobId.company ||
+                    "Company not specified"
+                );
+
+            }
+
+        }
+
+        return application.company || "Company not specified";
+    }
+
+    function getLocation(application) {
+
+        if (application.jobId) {
+
+            if (typeof application.jobId === "object") {
+
+                return (
+                    application.jobId.location ||
+                    "Location not specified"
+                );
+
+            }
+
+        }
+
+        return application.location || "Location not specified";
+    }
+
+    // --------------------------------------------------
+    // RENDER
+    // --------------------------------------------------
+
+    function renderApplications(applications) {
+
+        const container = document.getElementById("applications");
+
+        if (!applications.length) {
+
+            container.innerHTML = `
+                <div class="message">
+                    No applications found.
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = applications.map(application => {
+
+            const candidateName = getCandidateName(application);
+            const email = getCandidateEmail(application);
+            const jobTitle = getJobTitle(application);
+            const company = getCompany(application);
+            const location = getLocation(application);
+
+            const rawStatus = application.status || "applied";
+
+const statusMap = {
+    applied: "Applied",
+    reviewing: "Reviewing",
+    shortlisted: "Shortlisted",
+    rejected: "Rejected",
+    selected: "Hired"
+};
+
+const status =
+    statusMap[String(rawStatus).toLowerCase()] ||
+    "Applied";
+
+            const date = application.createdAt
+                ? new Date(application.createdAt).toLocaleDateString()
+                : "Date not available";
+
+            let statusClass = "status-applied";
+
+            if (status === "Shortlisted") {
+                statusClass = "status-shortlisted";
+            }
+
+            if (status === "Rejected") {
+                statusClass = "status-rejected";
+            }
+
+            if (status === "Hired") {
+                statusClass = "status-hired";
+            }
+
+            return `
+
+                <div
+                    class="application-card"
+                    data-search="${(
+                        candidateName +
+                        " " +
+                        jobTitle +
+                        " " +
+                        company
+                    ).toLowerCase()}"
+                    data-status="${status}"
+                >
+
+                    <div class="top-row">
+
+                        <div>
+
+                            <div class="candidate-name">
+                                ${candidateName}
+                            </div>
+
+                            <div class="job-title">
+                                ${jobTitle}
+                            </div>
+
+                            <div class="company">
+                                ${company}
+                            </div>
+
+                        </div>
+
+                        <div class="status-badge ${statusClass}">
+                            ${status}
+                        </div>
+
+                    </div>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            ✉ ${email}
+                        </div>
+
+                        <div class="detail">
+                            📍 ${location}
+                        </div>
+
+                        <div class="detail">
+                            📅 ${date}
+                        </div>
+
+                    </div>
+
+                    <div class="cover">
+
+                        <div class="cover-title">
+                            Cover message
+                        </div>
+
+                        <div class="cover-text">
+                            ${
+                                application.coverMessage ||
+                                application.coverLetter ||
+                                "No cover message provided."
+                            }
+                        </div>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <label>
+                            Update status:
+                        </label>
+
+                        <select
+                            class="status-select"
+                            id="status-${application._id}"
+                        >
+
+                            <option
+                                value="Applied"
+                                ${status === "Applied" ? "selected" : ""}
+                            >
+                                Applied
+                            </option>
+
+                            <option
+                                value="Shortlisted"
+                                ${status === "Shortlisted" ? "selected" : ""}
+                            >
+                                Shortlisted
+                            </option>
+
+                            <option
+                                value="Rejected"
+                                ${status === "Rejected" ? "selected" : ""}
+                            >
+                                Rejected
+                            </option>
+
+                            <option
+                                value="Hired"
+                                ${status === "Hired" ? "selected" : ""}
+                            >
+                                Hired
+                            </option>
+
+                        </select>
+
+                        <button
+                            class="update-btn"
+                            onclick="updateStatus('${application._id}')"
+                        >
+                            Update Status
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+    }
+
+    // --------------------------------------------------
+    // UPDATE STATUS
+    // --------------------------------------------------
+
+    async function updateStatus(applicationId) {
+
+        const select = document.getElementById(
+            `status-${applicationId}`
+        );
+
+        const newStatus = select.value;
+
+        try {
+
+            const response = await fetch(
+                `${API_URL}/api/applications/${applicationId}/status`,
+                {
+                    method: "PATCH",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    "Failed to update status"
+                );
+            }
+
+            alert("Application status updated successfully.");
+
+            await loadApplications();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to update status.\n\n" +
+                error.message
+            );
+        }
+    }
+
+    // --------------------------------------------------
+    // FILTER
+    // --------------------------------------------------
+
+    function filterApplications() {
+
+        const search = document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+        const status = document
+            .getElementById("statusFilter")
+            .value;
+
+        const sort = document
+            .getElementById("sortFilter")
+            .value;
+
+        let filtered = allApplications.filter(application => {
+
+            const candidate = getCandidateName(application)
+                .toLowerCase();
+
+            const job = getJobTitle(application)
+                .toLowerCase();
+
+            const company = getCompany(application)
+                .toLowerCase();
+
+            const currentStatus =
+                application.status || "Applied";
+
+            const matchesSearch =
+                !search ||
+                candidate.includes(search) ||
+                job.includes(search) ||
+                company.includes(search);
+
+            const matchesStatus =
+                !status ||
+                currentStatus === status;
+
+            return matchesSearch && matchesStatus;
+
+        });
+
+        filtered.sort((a, b) => {
+
+            const dateA =
+                new Date(a.createdAt || 0).getTime();
+
+            const dateB =
+                new Date(b.createdAt || 0).getTime();
+
+            return sort === "newest"
+                ? dateB - dateA
+                : dateA - dateB;
+
+        });
+
+        renderApplications(filtered);
+    }
+
+    // --------------------------------------------------
+    // CLEAR FILTERS
+    // --------------------------------------------------
+
+    function clearFilters() {
+
+        document.getElementById("searchInput").value = "";
+        document.getElementById("statusFilter").value = "";
+        document.getElementById("sortFilter").value = "newest";
+
+        renderApplications(allApplications);
+    }
+
+    // --------------------------------------------------
+    // ENTER KEY SEARCH
+    // --------------------------------------------------
+
+    document
+        .getElementById("searchInput")
+        .addEventListener("keydown", function(event) {
+
+            if (event.key === "Enter") {
+                filterApplications();
+            }
+
+        });
+
+    // --------------------------------------------------
+    // START
+    // --------------------------------------------------
+
+    loadApplications();
+
+</script>
+
+</body>
+</html>

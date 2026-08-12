@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HireFlow - Shortlisted Candidates</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172b4d;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 25px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 34px;
+            font-weight: 800;
+            color: #6546f5;
+        }
+
+        .back-btn {
+            background: white;
+            border: 1px solid #dbe2ea;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #172b4d;
+        }
+
+        main {
+            max-width: 1150px;
+            margin: 45px auto;
+            padding: 0 25px;
+        }
+
+        .page-title {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #607795;
+            font-size: 17px;
+            margin-bottom: 35px;
+        }
+
+        .top-card {
+            background: white;
+            border: 1px solid #e0e6ef;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .count-label {
+            color: #607795;
+            font-size: 15px;
+        }
+
+        .count {
+            font-size: 28px;
+            font-weight: 800;
+            color: #6546f5;
+        }
+
+        .search-box {
+            background: white;
+            border: 1px solid #e0e6ef;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #6546f5;
+        }
+
+        .candidate-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .candidate-card {
+            background: white;
+            border: 1px solid #e0e6ef;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .candidate-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .candidate-info {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #eeeaff;
+            color: #6546f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .candidate-name {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .job-title {
+            color: #6546f5;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            color: #607795;
+        }
+
+        .status {
+            background: #fff7d6;
+            color: #9a6700;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .detail {
+            background: #f6f8fc;
+            padding: 9px 13px;
+            border-radius: 9px;
+            color: #536b89;
+            font-size: 14px;
+        }
+
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-btn {
+            background: #6546f5;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 9px;
+            font-weight: 700;
+        }
+
+        .application-btn {
+            background: white;
+            color: #6546f5;
+            border: 1px solid #6546f5;
+            padding: 10px 17px;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .loading,
+        .empty,
+        .error {
+            background: white;
+            border: 1px solid #e0e6ef;
+            border-radius: 18px;
+            padding: 55px;
+            text-align: center;
+            color: #607795;
+            font-size: 17px;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            main {
+                margin: 30px auto;
+            }
+
+            .page-title {
+                font-size: 32px;
+            }
+
+            .top-card {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .candidate-top {
+                flex-direction: column;
+            }
+
+            .candidate-info {
+                align-items: flex-start;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .profile-btn,
+            .application-btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="logo">
+        HireFlow
+    </div>
+
+    <button
+        class="back-btn"
+        onclick="goBack()"
+    >
+        ← Dashboard
+    </button>
+
+</header>
+
+
+<main>
+
+    <h1 class="page-title">
+        Shortlisted Candidates
+    </h1>
+
+    <p class="subtitle">
+        View candidates who have been shortlisted for your jobs.
+    </p>
+
+
+    <div class="top-card">
+
+        <div>
+
+            <div class="count-label">
+                Total shortlisted candidates
+            </div>
+
+            <div
+                class="count"
+                id="candidateCount"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search candidate or job..."
+            oninput="filterCandidates()"
+        >
+
+    </div>
+
+
+    <div
+        class="candidate-list"
+        id="candidateList"
+    >
+
+        <div class="loading">
+            Loading shortlisted candidates...
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    const API_URL =
+        "http://localhost:5000/api";
+
+
+    let shortlistedCandidates = [];
+
+
+    // =====================================================
+    // BACK
+    // =====================================================
+
+    function goBack() {
+
+        window.history.back();
+
+    }
+
+
+    // =====================================================
+    // ESCAPE HTML
+    // =====================================================
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
+            return "";
+
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    // =====================================================
+    // GET VALUE FROM OBJECT
+    // =====================================================
+
+    function getCandidate(application) {
+
+        return (
+            application.candidateId ||
+            application.candidate ||
+            application.user ||
+            application.userId ||
+            {}
+        );
+
+    }
+
+
+    function getJob(application) {
+
+        return (
+            application.jobId ||
+            application.job ||
+            {}
+        );
+
+    }
+
+
+    // =====================================================
+    // LOAD APPLICATIONS
+    // =====================================================
+
+    async function loadShortlistedCandidates() {
+
+        const list =
+            document.getElementById(
+                "candidateList"
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_URL}/applications`
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Unable to load applications"
+                );
+
+            }
+
+
+            const applications =
+                Array.isArray(data.applications)
+                    ? data.applications
+                    : Array.isArray(data.data)
+                        ? data.data
+                        : [];
+
+
+            shortlistedCandidates =
+                applications.filter(
+                    application => {
+
+                        const status =
+                            String(
+                                application.status ||
+                                ""
+                            ).toLowerCase();
+
+
+                        return (
+                            status ===
+                            "shortlisted"
+                        );
+
+                    }
+                );
+
+
+            document.getElementById(
+                "candidateCount"
+            ).textContent =
+                shortlistedCandidates.length;
+
+
+            renderCandidates(
+                shortlistedCandidates
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Shortlisted candidates error:",
+                error
+            );
+
+
+            list.innerHTML = `
+
+                <div class="error">
+
+                    <strong>
+                        Unable to load shortlisted candidates
+                    </strong>
+
+                    <br><br>
+
+                    ${escapeHtml(
+                        error.message
+                    )}
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    // =====================================================
+    // RENDER
+    // =====================================================
+
+    function renderCandidates(
+        candidates
+    ) {
+
+        const list =
+            document.getElementById(
+                "candidateList"
+            );
+
+
+        document.getElementById(
+            "candidateCount"
+        ).textContent =
+            candidates.length;
+
+
+        if (
+            candidates.length === 0
+        ) {
+
+            list.innerHTML = `
+
+                <div class="empty">
+
+                    <div style="
+                        font-size: 40px;
+                        margin-bottom: 15px;
+                    ">
+                        👥
+                    </div>
+
+                    <strong>
+                        No shortlisted candidates
+                    </strong>
+
+                    <br><br>
+
+                    Candidates will appear here
+                    after you shortlist an application.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        list.innerHTML =
+            candidates
+                .map(
+                    application => {
+
+                        const candidate =
+                            getCandidate(
+                                application
+                            );
+
+
+                        const job =
+                            getJob(
+                                application
+                            );
+
+
+                        const name =
+                            candidate.name ||
+                            candidate.fullName ||
+                            application.name ||
+                            "Candidate";
+
+
+                        const email =
+                            candidate.email ||
+                            application.email ||
+                            "Email not available";
+
+
+                        const phone =
+                            candidate.phone ||
+                            candidate.mobile ||
+                            "Phone not available";
+
+
+                        const jobTitle =
+                            job.title ||
+                            application.jobTitle ||
+                            application.title ||
+                            "Job";
+
+
+                        const company =
+                            job.company ||
+                            application.company ||
+                            "Company not specified";
+
+
+                        const candidateId =
+                            candidate._id ||
+                            candidate.id ||
+                            application.candidateId;
+
+
+                        const initials =
+                            name
+                                .split(" ")
+                                .filter(Boolean)
+                                .map(
+                                    word =>
+                                        word[0]
+                                )
+                                .join("")
+                                .substring(
+                                    0,
+                                    2
+                                )
+                                .toUpperCase();
+
+
+                        const profileLink =
+                            candidateId
+                                ? `profile-preview.html?id=${encodeURIComponent(
+                                    candidateId
+                                )}`
+                                : "#";
+
+
+                        return `
+
+                            <div
+                                class="candidate-card"
+                                data-search="${escapeHtml(
+                                    (
+                                        name +
+                                        " " +
+                                        email +
+                                        " " +
+                                        jobTitle +
+                                        " " +
+                                        company
+                                    ).toLowerCase()
+                                )}"
+                            >
+
+                                <div class="candidate-top">
+
+                                    <div class="candidate-info">
+
+                                        <div class="avatar">
+
+                                            ${escapeHtml(
+                                                initials
+                                            )}
+
+                                        </div>
+
+
+                                        <div>
+
+                                            <div class="candidate-name">
+
+                                                ${escapeHtml(
+                                                    name
+                                                )}
+
+                                            </div>
+
+                                            <div class="job-title">
+
+                                                ${escapeHtml(
+                                                    jobTitle
+                                                )}
+
+                                            </div>
+
+                                            <div class="company">
+
+                                                ${escapeHtml(
+                                                    company
+                                                )}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="status">
+
+                                        ✓ Shortlisted
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="details">
+
+                                    <div class="detail">
+
+                                        ✉️
+                                        ${escapeHtml(
+                                            email
+                                        )}
+
+                                    </div>
+
+                                    <div class="detail">
+
+                                        📱
+                                        ${escapeHtml(
+                                            phone
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="actions">
+
+                                    ${
+                                        candidateId
+                                            ? `
+
+                                                <a
+                                                    class="profile-btn"
+                                                    href="${profileLink}"
+                                                >
+
+                                                    View Profile →
+
+                                                </a>
+
+                                            `
+                                            : ""
+                                    }
+
+
+                                    <button
+                                        class="application-btn"
+                                        onclick="viewApplication('${escapeHtml(
+                                            application._id ||
+                                            application.id ||
+                                            ""
+                                        )}')"
+                                    >
+
+                                        View Application
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+    }
+
+
+    // =====================================================
+    // SEARCH
+    // =====================================================
+
+    function filterCandidates() {
+
+        const search =
+            document.getElementById(
+                "searchInput"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+        const cards =
+            document.querySelectorAll(
+                ".candidate-card"
+            );
+
+
+        cards.forEach(
+            card => {
+
+                const text =
+                    card.dataset.search ||
+                    "";
+
+
+                card.style.display =
+                    !search ||
+                    text.includes(search)
+                        ? ""
+                        : "none";
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // VIEW APPLICATION
+    // =====================================================
+
+    function viewApplication(
+        applicationId
+    ) {
+
+        if (!applicationId) {
+
+            alert(
+                "Application ID is not available."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * Open the recruiter applications page.
+         * The application itself can be viewed there.
+         */
+
+        window.location.href =
+            `recruiter-applications.html?application=${encodeURIComponent(
+                applicationId
+            )}`;
+
+    }
+
+
+    // =====================================================
+    // START
+    // =====================================================
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadShortlistedCandidates
+    );
+
+</script>
+
+</body>
+
+</html>

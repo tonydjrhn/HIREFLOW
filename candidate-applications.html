@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Applications - HireFlow</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172b4d;
+        }
+
+        header {
+            height: 90px;
+            background: white;
+            border-bottom: 1px solid #e4e7ef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: #6040ff;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #172b4d;
+            border: 1px solid #d8deea;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            background: white;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 55px auto;
+            padding: 0 25px;
+        }
+
+        .heading h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .heading p {
+            color: #60708c;
+            font-size: 18px;
+            margin-bottom: 35px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e1e6ef;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .summary-card span {
+            display: block;
+            color: #65758f;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card strong {
+            font-size: 30px;
+            color: #6040ff;
+        }
+
+        .applications {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .application-card {
+            background: white;
+            border: 1px solid #e1e6ef;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 5px 18px rgba(20, 40, 80, 0.04);
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .job-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .company {
+            color: #6040ff;
+            font-weight: 700;
+            font-size: 17px;
+        }
+
+        .details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .detail {
+            background: #f6f7fb;
+            padding: 9px 13px;
+            border-radius: 9px;
+            color: #53627b;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 9px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-applied {
+            background: #eeeaff;
+            color: #6040ff;
+        }
+
+        .status-reviewing {
+            background: #fff4d8;
+            color: #a56a00;
+        }
+
+        .status-shortlisted {
+            background: #fff5cf;
+            color: #9b6900;
+        }
+
+        .status-rejected {
+            background: #ffe4e4;
+            color: #c62828;
+        }
+
+        .status-hired {
+            background: #dff8e9;
+            color: #168548;
+        }
+
+        .description {
+            margin-top: 20px;
+            color: #60708c;
+            line-height: 1.6;
+        }
+
+        .date {
+            margin-top: 18px;
+            color: #7b879b;
+            font-size: 14px;
+        }
+
+        .loading,
+        .empty {
+            background: white;
+            border: 1px solid #e1e6ef;
+            border-radius: 18px;
+            padding: 60px 30px;
+            text-align: center;
+            color: #66758d;
+        }
+
+        .error {
+            background: #fff0f0;
+            border: 1px solid #ffcaca;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 800px) {
+            .summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .top-row {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .heading h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HireFlow</div>
+
+    <a href="candidate-dashboard.html" class="back-btn">
+        ← Dashboard
+    </a>
+</header>
+
+<main>
+
+    <section class="heading">
+        <h1>My Applications</h1>
+        <p>Track the jobs you have applied for and check your application status.</p>
+    </section>
+
+    <section class="summary">
+
+        <div class="summary-card">
+            <span>Total Applications</span>
+            <strong id="totalCount">0</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>Applied</span>
+            <strong id="appliedCount">0</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>Shortlisted</span>
+            <strong id="shortlistedCount">0</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>Hired</span>
+            <strong id="hiredCount">0</strong>
+        </div>
+
+    </section>
+
+    <section id="applications">
+        <div class="loading">
+            Loading applications...
+        </div>
+    </section>
+
+</main>
+
+<script>
+
+const API_BASE = "http://localhost:5000";
+
+
+function normalizeStatus(status) {
+
+    const value = String(status || "applied").toLowerCase();
+
+    if (value === "applied") return "Applied";
+    if (value === "reviewing") return "Reviewing";
+    if (value === "shortlisted") return "Shortlisted";
+    if (value === "rejected") return "Rejected";
+    if (value === "hired") return "Hired";
+    if (value === "selected") return "Hired";
+
+    return "Applied";
+}
+
+
+function statusClass(status) {
+
+    if (status === "Shortlisted") return "status-shortlisted";
+    if (status === "Rejected") return "status-rejected";
+    if (status === "Hired") return "status-hired";
+    if (status === "Reviewing") return "status-reviewing";
+
+    return "status-applied";
+}
+
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function formatDate(value) {
+
+    if (!value) {
+        return "Date not available";
+    }
+
+    const date = new Date(value);
+
+    if (isNaN(date.getTime())) {
+        return "Date not available";
+    }
+
+    return date.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+
+function getCurrentEmail() {
+
+    const keys = [
+        "user",
+        "currentUser",
+        "candidate",
+        "candidateUser",
+        "loggedInUser",
+        "userData"
+    ];
+
+    for (const key of keys) {
+
+        const value = localStorage.getItem(key);
+
+        if (!value) continue;
+
+        try {
+
+            const parsed = JSON.parse(value);
+
+            if (parsed && parsed.email) {
+                return String(parsed.email)
+                    .toLowerCase()
+                    .trim();
+            }
+
+        } catch {
+
+            if (value.includes("@")) {
+                return value.toLowerCase().trim();
+            }
+        }
+    }
+
+    return null;
+}
+
+
+/* Get an ID from an object safely */
+
+function getId(value) {
+
+    if (!value) return null;
+
+    if (typeof value === "string") {
+        return value;
+    }
+
+    if (value._id) {
+        return String(value._id);
+    }
+
+    if (value.id) {
+        return String(value.id);
+    }
+
+    return null;
+}
+
+
+/* Find the job connected to this application */
+
+function findJob(application, jobs) {
+
+    // In our database, jobId may already contain
+    // the complete job object.
+    if (
+        application.jobId &&
+        typeof application.jobId === "object"
+    ) {
+        return application.jobId;
+    }
+
+    // Sometimes the job may be stored as "job"
+    if (
+        application.job &&
+        typeof application.job === "object"
+    ) {
+        return application.job;
+    }
+
+    // Get the job ID if jobId is just an ID
+    const applicationJobId =
+        application.jobId ||
+        application.jobID ||
+        application.job?._id ||
+        application.job?.id;
+
+    const applicationId =
+        applicationJobId
+            ? String(applicationJobId)
+            : "";
+
+    // Match the ID with the jobs list
+    if (applicationId) {
+
+        const matchedJob = jobs.find(job => {
+
+            const jobId =
+                job?._id ||
+                job?.id;
+
+            if (!jobId) {
+                return false;
+            }
+
+            return String(jobId) === applicationId;
+        });
+
+        if (matchedJob) {
+            return matchedJob;
+        }
+    }
+
+    // Final fallback: match using job title
+    const applicationTitle =
+        application.jobTitle ||
+        application.title ||
+        application.job?.title;
+
+    if (applicationTitle) {
+
+        const title =
+            String(applicationTitle)
+                .toLowerCase()
+                .trim();
+
+        const matchedJob = jobs.find(job =>
+            String(job?.title || "")
+                .toLowerCase()
+                .trim() === title
+        );
+
+        if (matchedJob) {
+            return matchedJob;
+        }
+    }
+
+    return null;
+}
+
+
+/* Update dashboard numbers */
+
+function updateSummary(applications) {
+
+    document.getElementById("totalCount").textContent =
+        applications.length;
+
+
+    document.getElementById("appliedCount").textContent =
+        applications.filter(
+            app => normalizeStatus(app.status) === "Applied"
+        ).length;
+
+
+    document.getElementById("shortlistedCount").textContent =
+        applications.filter(
+            app => normalizeStatus(app.status) === "Shortlisted"
+        ).length;
+
+
+    document.getElementById("hiredCount").textContent =
+        applications.filter(
+            app => normalizeStatus(app.status) === "Hired"
+        ).length;
+}
+
+
+/* Create application card */
+
+function createCard(application, job) {
+
+    const status = normalizeStatus(application.status);
+
+    const title =
+        job?.title ||
+        application.jobTitle ||
+        application.job?.title ||
+        application.title ||
+        "Job";
+
+
+    const company =
+        job?.company ||
+        application.company ||
+        application.job?.company ||
+        "Company not specified";
+
+
+    const location =
+        job?.location ||
+        application.location ||
+        application.job?.location ||
+        "Location not specified";
+
+
+    const jobType =
+        job?.jobType ||
+        application.jobType ||
+        application.job?.jobType ||
+        "";
+
+
+    const salary =
+        job?.salary ||
+        application.salary ||
+        application.job?.salary ||
+        "";
+
+
+    const description =
+        job?.description ||
+        application.description ||
+        application.job?.description ||
+        "No job description available.";
+
+
+    const appliedDate =
+        application.createdAt ||
+        application.appliedAt ||
+        application.updatedAt;
+
+
+    return `
+
+        <article class="application-card">
+
+            <div class="top-row">
+
+                <div>
+
+                    <div class="job-title">
+                        ${escapeHtml(title)}
+                    </div>
+
+                    <div class="company">
+                        ${escapeHtml(company)}
+                    </div>
+
+                </div>
+
+
+                <div class="status ${statusClass(status)}">
+                    ${escapeHtml(status)}
+                </div>
+
+            </div>
+
+
+            <div class="details">
+
+                <div class="detail">
+                    📍 ${escapeHtml(location)}
+                </div>
+
+
+                ${
+                    jobType
+                    ? `
+                        <div class="detail">
+                            💼 ${escapeHtml(jobType)}
+                        </div>
+                    `
+                    : ""
+                }
+
+
+                ${
+                    salary
+                    ? `
+                        <div class="detail">
+                            💰 ${escapeHtml(salary)}
+                        </div>
+                    `
+                    : ""
+                }
+
+            </div>
+
+
+            <div class="description">
+                ${escapeHtml(description)}
+            </div>
+
+
+            <div class="date">
+                📅 Applied on ${formatDate(appliedDate)}
+            </div>
+
+        </article>
+
+    `;
+}
+
+
+/* Load applications and jobs */
+
+async function loadApplications() {
+
+    const container =
+        document.getElementById("applications");
+
+
+    try {
+
+        const [applicationsResponse, jobsResponse] =
+            await Promise.all([
+
+                fetch(`${API_BASE}/api/applications`),
+
+                fetch(`${API_BASE}/api/jobs`)
+
+            ]);
+
+
+        if (!applicationsResponse.ok) {
+            throw new Error("Unable to load applications");
+        }
+
+
+        if (!jobsResponse.ok) {
+            throw new Error("Unable to load jobs");
+        }
+
+
+        const applicationsData =
+            await applicationsResponse.json();
+
+
+        const jobsData =
+            await jobsResponse.json();
+
+
+        let applications =
+            applicationsData.applications || [];
+
+
+        const jobs =
+            jobsData.jobs || [];
+
+
+        /*
+         * Show only current candidate's applications
+         * when login information is available.
+         */
+
+        const currentEmail =
+            getCurrentEmail();
+
+
+        if (currentEmail) {
+
+            applications =
+                applications.filter(application => {
+
+                    const email =
+                        application.email ||
+                        application.candidateEmail ||
+                        application.user?.email ||
+                        application.candidate?.email;
+
+
+                    if (!email) {
+                        return false;
+                    }
+
+
+                    return String(email)
+                        .toLowerCase()
+                        .trim() === currentEmail;
+                });
+        }
+
+
+        updateSummary(applications);
+
+
+        if (applications.length === 0) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    <h2 style="margin-bottom:10px;">
+                        No applications found
+                    </h2>
+
+                    <p>
+                        You haven't applied for any jobs yet.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML =
+            applications
+                .map(application => {
+
+                    const job =
+                        findJob(application, jobs);
+
+                    return createCard(
+                        application,
+                        job
+                    );
+
+                })
+                .join("");
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+
+            <div class="error">
+
+                <strong>
+                    Unable to load applications.
+                </strong>
+
+                <br><br>
+
+                ${escapeHtml(error.message)}
+
+            </div>
+
+        `;
+    }
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadApplications
+);
+
+</script>
+
+</body>
+</html>
