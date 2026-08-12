@@ -60,7 +60,120 @@ pages.forEach((page) => {
         res.sendFile(path.join(__dirname, page));
     });
 });
+// =====================================================
+// REGISTER USER
+// =====================================================
 
+app.post("/api/register", async (req, res) => {
+
+    try {
+
+        const {
+            name,
+            email,
+            password,
+            role
+        } = req.body;
+
+
+        // Check required fields
+
+        if (!name || !email || !password) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Name, email and password are required"
+            });
+
+        }
+
+
+        // Normalize email
+
+        const normalizedEmail =
+            email.trim().toLowerCase();
+
+
+        // Check whether user already exists
+
+        const existingUser =
+            await User.findOne({
+                email: normalizedEmail
+            });
+
+
+        if (existingUser) {
+
+            return res.status(400).json({
+                success: false,
+                message: "User already exists"
+            });
+
+        }
+
+
+        // Hash password
+
+        const hashedPassword =
+            await bcrypt.hash(password, 10);
+
+
+        // Create user
+
+        const user = new User({
+
+            name: name.trim(),
+
+            email: normalizedEmail,
+
+            password: hashedPassword,
+
+            role: role || "candidate"
+
+        });
+
+
+        // Save user
+
+        await user.save();
+
+
+        console.log(
+            "New user registered:",
+            normalizedEmail
+        );
+
+
+        // Send JSON response
+
+        return res.status(201).json({
+
+            success: true,
+
+            message: "Registration successful"
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Registration error:",
+            error
+        );
+
+
+        return res.status(500).json({
+
+            success: false,
+
+            message: "Server error"
+
+        });
+
+    }
+
+});
 // =====================================================
 // HEALTH CHECK
 // =====================================================
