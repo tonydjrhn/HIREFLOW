@@ -1,47 +1,37 @@
 /* =========================================================
    HIRE FLOW — REGISTRATION
-   ========================================================= */
+========================================================= */
 
-const form =
-    document.getElementById("registerForm");
+const form = document.getElementById("registerForm");
 
-const password =
-    document.getElementById("password");
+const password = document.getElementById("password");
 
-const passwordToggle =
-    document.getElementById("passwordToggle");
+const passwordToggle = document.getElementById("passwordToggle");
 
-const strengthBars =
-    document.querySelectorAll(".strength-bars span");
+const strengthBars = document.querySelectorAll(".strength-bars span");
 
-const strengthText =
-    document.getElementById("strengthText");
+const strengthText = document.getElementById("strengthText");
 
-const roleCards =
-    document.querySelectorAll(".role-card");
+const roleCards = document.querySelectorAll(".role-card");
 
-const successOverlay =
-    document.getElementById("successOverlay");
+const successOverlay = document.getElementById("successOverlay");
 
-const successBtn =
-    document.getElementById("successBtn");
+const successBtn = document.getElementById("successBtn");
 
 
 /* =========================================================
    PASSWORD VISIBILITY
-   ========================================================= */
+========================================================= */
 
 passwordToggle.addEventListener("click", () => {
 
-    const icon =
-        passwordToggle.querySelector("i");
+    const icon = passwordToggle.querySelector("i");
 
     if (password.type === "password") {
 
         password.type = "text";
 
         icon.classList.remove("fa-eye");
-
         icon.classList.add("fa-eye-slash");
 
         passwordToggle.setAttribute(
@@ -54,7 +44,6 @@ passwordToggle.addEventListener("click", () => {
         password.type = "password";
 
         icon.classList.remove("fa-eye-slash");
-
         icon.classList.add("fa-eye");
 
         passwordToggle.setAttribute(
@@ -69,7 +58,7 @@ passwordToggle.addEventListener("click", () => {
 
 /* =========================================================
    PASSWORD STRENGTH
-   ========================================================= */
+========================================================= */
 
 password.addEventListener("input", () => {
 
@@ -104,39 +93,29 @@ password.addEventListener("input", () => {
 
     if (score === 0) {
 
-        strengthText.textContent =
-            "Password strength";
+        strengthText.textContent = "Password strength";
+        strengthText.style.color = "";
 
     }
 
 
     if (score === 1) {
 
-        strengthBars[0].style.background =
-            "#f87171";
+        strengthBars[0].style.background = "#f87171";
 
-        strengthText.textContent =
-            "Weak password";
-
-        strengthText.style.color =
-            "#f87171";
+        strengthText.textContent = "Weak password";
+        strengthText.style.color = "#f87171";
 
     }
 
 
     if (score === 2) {
 
-        strengthBars[0].style.background =
-            "#fbbf24";
+        strengthBars[0].style.background = "#fbbf24";
+        strengthBars[1].style.background = "#fbbf24";
 
-        strengthBars[1].style.background =
-            "#fbbf24";
-
-        strengthText.textContent =
-            "Fair password";
-
-        strengthText.style.color =
-            "#fbbf24";
+        strengthText.textContent = "Fair password";
+        strengthText.style.color = "#fbbf24";
 
     }
 
@@ -145,16 +124,12 @@ password.addEventListener("input", () => {
 
         for (let i = 0; i < 3; i++) {
 
-            strengthBars[i].style.background =
-                "#a78bfa";
+            strengthBars[i].style.background = "#a78bfa";
 
         }
 
-        strengthText.textContent =
-            "Good password";
-
-        strengthText.style.color =
-            "#a78bfa";
+        strengthText.textContent = "Good password";
+        strengthText.style.color = "#a78bfa";
 
     }
 
@@ -163,16 +138,12 @@ password.addEventListener("input", () => {
 
         strengthBars.forEach(bar => {
 
-            bar.style.background =
-                "#34d399";
+            bar.style.background = "#34d399";
 
         });
 
-        strengthText.textContent =
-            "Strong password";
-
-        strengthText.style.color =
-            "#34d399";
+        strengthText.textContent = "Strong password";
+        strengthText.style.color = "#34d399";
 
     }
 
@@ -181,7 +152,7 @@ password.addEventListener("input", () => {
 
 /* =========================================================
    ROLE SELECTION
-   ========================================================= */
+========================================================= */
 
 roleCards.forEach(card => {
 
@@ -197,10 +168,11 @@ roleCards.forEach(card => {
         card.classList.add("selected");
 
 
-        const radio =
-            card.querySelector("input");
+        const radio = card.querySelector("input");
 
-        radio.checked = true;
+        if (radio) {
+            radio.checked = true;
+        }
 
     });
 
@@ -208,20 +180,23 @@ roleCards.forEach(card => {
 
 
 /* =========================================================
-   FORM VALIDATION
-   ========================================================= */
+   FORM SUBMISSION
+========================================================= */
 
 form.addEventListener("submit", async event => {
+
     event.preventDefault();
-    event.preventDefault();
+
     console.log("Form submit triggered!");
 
 
-    const fullName =
-        document.getElementById("fullName");
+    /* =====================================================
+       GET FORM ELEMENTS
+    ===================================================== */
 
-    const email =
-        document.getElementById("email");
+    const fullName = document.getElementById("fullName");
+
+    const email = document.getElementById("email");
 
     const passwordError =
         document.getElementById("passwordError");
@@ -236,15 +211,23 @@ form.addEventListener("submit", async event => {
         document.getElementById("terms");
 
 
+    /* =====================================================
+       CLEAR OLD ERRORS
+    ===================================================== */
+
     nameError.textContent = "";
+
     emailError.textContent = "";
+
     passwordError.textContent = "";
 
 
     let valid = true;
 
 
-    /* NAME */
+    /* =====================================================
+       NAME VALIDATION
+    ===================================================== */
 
     if (fullName.value.trim().length < 2) {
 
@@ -256,7 +239,9 @@ form.addEventListener("submit", async event => {
     }
 
 
-    /* EMAIL */
+    /* =====================================================
+       EMAIL VALIDATION
+    ===================================================== */
 
     const emailPattern =
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -272,7 +257,9 @@ form.addEventListener("submit", async event => {
     }
 
 
-    /* PASSWORD */
+    /* =====================================================
+       PASSWORD VALIDATION
+    ===================================================== */
 
     if (password.value.length < 8) {
 
@@ -284,7 +271,9 @@ form.addEventListener("submit", async event => {
     }
 
 
-    /* TERMS */
+    /* =====================================================
+       TERMS VALIDATION
+    ===================================================== */
 
     if (!terms.checked) {
 
@@ -298,62 +287,154 @@ form.addEventListener("submit", async event => {
 
 
     if (!valid) {
+
         return;
+
     }
 
 
     /* =====================================================
-      ============================================================
-   CREATE ACCOUNT
-============================================================ */
+       CREATE ACCOUNT
+    ===================================================== */
 
-const button = document.getElementById("createAccountBtn");
+    const button =
+        document.getElementById("createAccountBtn");
 
-button.disabled = true;
-button.querySelector("span").textContent = "Creating account...";
 
-try {
-    console.log("Sending registration request... PRODUCTION");
+    button.disabled = true;
 
-    fetch("/api/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name: fullName.value.trim(),
-            email: email.value.trim(),
-            password: password.value
-        })
-    });
+    const buttonText =
+        button.querySelector("span");
 
-    const data = await response.json();
+    if (buttonText) {
 
-    console.log("Response received:", response.status);
+        buttonText.textContent =
+            "Creating account...";
 
-    if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
     }
 
-    console.log("Registration successful:", data);
 
-    successOverlay.classList.add("active");
+    try {
 
-    document.body.style.overflow = "hidden";
+        console.log(
+            "Sending registration request... PRODUCTION"
+        );
 
-} catch (error) {
 
-    console.error("Registration error:", error);
+        /* =================================================
+           IMPORTANT:
+           DO NOT USE localhost HERE.
+           This works on Render because the frontend and
+           backend are served by the same Express server.
+        ================================================= */
 
-    alert(error.message || "Something went wrong. Please try again.");
+        const response = await fetch("/api/register", {
 
-    button.disabled = false;
-    button.querySelector("span").textContent = "Create Account";
-}
+            method: "POST",
+
+            headers: {
+
+                "Content-Type":
+                    "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+                name:
+                    fullName.value.trim(),
+
+                email:
+                    email.value.trim(),
+
+                password:
+                    password.value
+
+            })
+
+        });
+
+
+        console.log(
+            "Response received:",
+            response.status
+        );
+
+
+        /* =================================================
+           READ SERVER RESPONSE
+        ================================================= */
+
+        const data = await response.json();
+
+
+        console.log(
+            "Server response:",
+            data
+        );
+
+
+        /* =================================================
+           CHECK RESPONSE
+        ================================================= */
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Registration failed"
+            );
+
+        }
+
+
+        /* =================================================
+           REGISTRATION SUCCESS
+        ================================================= */
+
+        console.log(
+            "Registration successful:",
+            data
+        );
+
+
+        successOverlay.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+
+
+    } catch (error) {
+
+        console.error(
+            "Registration error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Something went wrong. Please try again."
+        );
+
+
+        button.disabled = false;
+
+
+        if (buttonText) {
+
+            buttonText.textContent =
+                "Create Account";
+
+        }
+
+    }
+
+});
+
 
 /* =========================================================
    SUCCESS CONTINUE
-   ========================================================= */
+========================================================= */
 
 successBtn.addEventListener("click", () => {
 
@@ -365,8 +446,8 @@ successBtn.addEventListener("click", () => {
 
 
 /* =========================================================
-   ESCAPE
-   ========================================================= */
+   ESCAPE KEY
+========================================================= */
 
 document.addEventListener("keydown", event => {
 
@@ -386,7 +467,7 @@ document.addEventListener("keydown", event => {
 
 /* =========================================================
    CONSOLE
-   ========================================================= */
+========================================================= */
 
 console.log(
     "%cHireFlow Registration",
@@ -396,4 +477,3 @@ console.log(
 console.log(
     "Registration interface initialized."
 );
-});
