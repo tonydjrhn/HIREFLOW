@@ -313,9 +313,9 @@ button.disabled = true;
 button.querySelector("span").textContent = "Creating account...";
 
 try {
-    console.log("Sending registration request...");
+    console.log("Sending registration request... PRODUCTION");
 
-    const response = await fetch("http://localhost:5000/api/register", {
+    fetch("/api/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
