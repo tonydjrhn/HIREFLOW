@@ -3,7 +3,7 @@ const path = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
-
+const User = require("./models/User");
 const app = express();
 
 // =====================================================
