@@ -1,3 +1,7 @@
+// =====================================================
+// HireFlow - Complete Server
+// =====================================================
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -14,7 +18,6 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-
 // =====================================================
 // MIDDLEWARE
 // =====================================================
@@ -23,23 +26,24 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+
+// =====================================================
+// FRONTEND STATIC FILES
+// =====================================================
+
+// IMPORTANT:
+// index.html, register.html, login.html,
+// script.js, style.css, etc. are inside backend/
+
 app.use(express.static(__dirname));
-// =====================================================
-// FRONTEND
-// =====================================================
-
-app.use(express.static(__dirname));
-
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
-
 
 // =====================================================
-// UPLOADS
+// UPLOAD DIRECTORIES
 // =====================================================
 
 const uploadsDir = path.join(
@@ -57,6 +61,9 @@ if (!fs.existsSync(uploadsDir)) {
     );
 }
 
+// =====================================================
+// MULTER - RESUME UPLOAD
+// =====================================================
 
 const storage = multer.diskStorage({
 
@@ -72,7 +79,6 @@ const storage = multer.diskStorage({
         );
 
     },
-
 
     filename: function (
         req,
@@ -99,7 +105,6 @@ const storage = multer.diskStorage({
 
 });
 
-
 const upload = multer({
 
     storage: storage,
@@ -115,12 +120,11 @@ const upload = multer({
         cb
     ) {
 
-        const allowed =
-            [
-                ".pdf",
-                ".doc",
-                ".docx"
-            ];
+        const allowedExtensions = [
+            ".pdf",
+            ".doc",
+            ".docx"
+        ];
 
         const extension =
             path
@@ -130,7 +134,7 @@ const upload = multer({
                 .toLowerCase();
 
         if (
-            allowed.includes(
+            allowedExtensions.includes(
                 extension
             )
         ) {
@@ -154,6 +158,9 @@ const upload = multer({
 
 });
 
+// =====================================================
+// MAKE UPLOADS ACCESSIBLE
+// =====================================================
 
 app.use(
     "/uploads",
@@ -164,7 +171,6 @@ app.use(
         )
     )
 );
-
 
 // =====================================================
 // DATABASE
@@ -181,7 +187,7 @@ mongoose
         );
 
     })
-    .catch(error => {
+    .catch((error) => {
 
         console.error(
             "MongoDB connection failed ❌"
@@ -193,14 +199,12 @@ mongoose
 
     });
 
-
 // =====================================================
 // JOB MODEL
 // =====================================================
 
 const jobSchema =
     new mongoose.Schema(
-
         {
 
             title: {
@@ -210,34 +214,22 @@ const jobSchema =
 
             company: {
                 type: String,
-                default: "Company"
+                required: true
             },
 
             location: {
                 type: String,
-                default: "Location not specified"
+                default: ""
             },
 
             jobType: {
                 type: String,
-                default: "full-time"
+                default: "Full-time"
             },
 
             salary: {
                 type: String,
-                default: "Salary not specified"
-            },
-
-            experience: {
-                type: String,
-                default: "Experience not specified"
-            },
-
-            skills: {
-                type: [
-                    String
-                ],
-                default: []
+                default: ""
             },
 
             description: {
@@ -245,23 +237,24 @@ const jobSchema =
                 default: ""
             },
 
+            skills: {
+                type: [String],
+                default: []
+            },
+
             recruiterId: {
-                type:
-                    mongoose.Schema.Types.ObjectId,
-
+                type: mongoose.Schema.Types.ObjectId,
                 ref: "User",
+                default: null
+            },
 
-                required: false
+            createdAt: {
+                type: Date,
+                default: Date.now
             }
 
-        },
-
-        {
-            timestamps: true
         }
-
     );
-
 
 const Job =
     mongoose.models.Job ||
@@ -270,72 +263,38 @@ const Job =
         jobSchema
     );
 
-
 // =====================================================
 // APPLICATION MODEL
 // =====================================================
 
 const applicationSchema =
     new mongoose.Schema(
-
         {
 
-            candidateId: {
-                type:
-                    mongoose.Schema.Types.ObjectId,
-
-                ref: "User",
-
-                required: true
-            },
-
             jobId: {
-                type:
-                    mongoose.Schema.Types.ObjectId,
-
+                type: mongoose.Schema.Types.ObjectId,
                 ref: "Job",
-
                 required: true
             },
 
-            coverMessage: {
-                type: String,
-                default: ""
+            candidateId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
             },
 
             status: {
                 type: String,
+                default: "Applied"
+            },
 
-                enum: [
-                    "applied",
-                    "reviewing",
-                    "shortlisted",
-                    "rejected",
-                    "selected"
-                ],
-
-                default: "applied"
+            appliedAt: {
+                type: Date,
+                default: Date.now
             }
 
-        },
-
-        {
-            timestamps: true
         }
-
     );
-
-
-applicationSchema.index(
-    {
-        candidateId: 1,
-        jobId: 1
-    },
-    {
-        unique: true
-    }
-);
-
 
 const Application =
     mongoose.models.Application ||
@@ -344,46 +303,8 @@ const Application =
         applicationSchema
     );
 
-
 // =====================================================
-// SHORTLIST MODEL
-// =====================================================
-
-const shortlistSchema =
-    new mongoose.Schema(
-
-        {
-
-            candidateId: {
-                type:
-                    mongoose.Schema.Types.ObjectId,
-
-                ref: "User",
-
-                required: true,
-
-                unique: true
-            }
-
-        },
-
-        {
-            timestamps: true
-        }
-
-    );
-
-
-const Shortlist =
-    mongoose.models.Shortlist ||
-    mongoose.model(
-        "Shortlist",
-        shortlistSchema
-    );
-
-
-// =====================================================
-// REGISTER
+// REGISTER USER
 // =====================================================
 
 app.post(
@@ -401,7 +322,6 @@ app.post(
                 password,
                 role
             } = req.body;
-
 
             if (
                 !name ||
@@ -422,21 +342,16 @@ app.post(
 
             }
 
-
             const normalizedEmail =
                 email
                     .trim()
                     .toLowerCase();
 
-
             const existingUser =
                 await User.findOne({
-
                     email:
                         normalizedEmail
-
                 });
-
 
             if (existingUser) {
 
@@ -453,13 +368,11 @@ app.post(
 
             }
 
-
             const hashedPassword =
                 await bcrypt.hash(
                     password,
                     10
                 );
-
 
             const user =
                 new User({
@@ -479,9 +392,12 @@ app.post(
 
                 });
 
-
             await user.save();
 
+            console.log(
+                "New user registered:",
+                normalizedEmail
+            );
 
             return res
                 .status(201)
@@ -495,7 +411,6 @@ app.post(
                 });
 
         }
-
         catch (error) {
 
             console.error(
@@ -519,9 +434,8 @@ app.post(
     }
 );
 
-
 // =====================================================
-// LOGIN
+// LOGIN USER
 // =====================================================
 
 app.post(
@@ -537,7 +451,6 @@ app.post(
                 email,
                 password
             } = req.body;
-
 
             if (
                 !email ||
@@ -557,21 +470,16 @@ app.post(
 
             }
 
-
             const normalizedEmail =
                 email
                     .trim()
                     .toLowerCase();
 
-
             const user =
                 await User.findOne({
-
                     email:
                         normalizedEmail
-
                 });
-
 
             if (!user) {
 
@@ -588,13 +496,11 @@ app.post(
 
             }
 
-
             const passwordMatch =
                 await bcrypt.compare(
                     password,
                     user.password
                 );
-
 
             if (!passwordMatch) {
 
@@ -611,6 +517,10 @@ app.post(
 
             }
 
+            console.log(
+                "User login successful:",
+                normalizedEmail
+            );
 
             return res
                 .status(200)
@@ -641,7 +551,6 @@ app.post(
                 });
 
         }
-
         catch (error) {
 
             console.error(
@@ -665,9 +574,8 @@ app.post(
     }
 );
 
-
 // =====================================================
-// GET PROFILE
+// GET USER PROFILE
 // =====================================================
 
 app.get(
@@ -680,13 +588,13 @@ app.get(
         try {
 
             const user =
-                await User.findById(
-                    req.params.userId
-                )
-                .select(
-                    "-password"
-                );
-
+                await User
+                    .findById(
+                        req.params.userId
+                    )
+                    .select(
+                        "-password"
+                    );
 
             if (!user) {
 
@@ -703,7 +611,6 @@ app.get(
 
             }
 
-
             return res
                 .status(200)
                 .json({
@@ -716,7 +623,6 @@ app.get(
                 });
 
         }
-
         catch (error) {
 
             console.error(
@@ -740,9 +646,8 @@ app.get(
     }
 );
 
-
 // =====================================================
-// UPDATE PROFILE
+// UPDATE USER PROFILE
 // =====================================================
 
 app.put(
@@ -762,13 +667,10 @@ app.put(
                 about,
                 careerGoal,
                 education,
-                skills,
-                resume
+                skills
             } = req.body;
 
-
             const updateData = {};
-
 
             if (
                 typeof name ===
@@ -780,7 +682,6 @@ app.put(
 
             }
 
-
             if (
                 typeof phone ===
                 "string"
@@ -790,7 +691,6 @@ app.put(
                     phone.trim();
 
             }
-
 
             if (
                 typeof location ===
@@ -802,7 +702,6 @@ app.put(
 
             }
 
-
             if (
                 typeof headline ===
                 "string"
@@ -812,7 +711,6 @@ app.put(
                     headline.trim();
 
             }
-
 
             if (
                 typeof about ===
@@ -824,7 +722,6 @@ app.put(
 
             }
 
-
             if (
                 typeof careerGoal ===
                 "string"
@@ -835,7 +732,6 @@ app.put(
 
             }
 
-
             if (
                 Array.isArray(
                     education
@@ -843,10 +739,31 @@ app.put(
             ) {
 
                 updateData.education =
-                    education;
+                    education.map(
+                        item => ({
+
+                            degree:
+                                String(
+                                    item.degree ||
+                                    ""
+                                ).trim(),
+
+                            college:
+                                String(
+                                    item.college ||
+                                    ""
+                                ).trim(),
+
+                            year:
+                                String(
+                                    item.year ||
+                                    ""
+                                ).trim()
+
+                        })
+                    );
 
             }
-
 
             if (
                 Array.isArray(
@@ -862,20 +779,11 @@ app.put(
                                     skill
                                 ).trim()
                         )
-                        .filter(Boolean);
+                        .filter(
+                            Boolean
+                        );
 
             }
-
-
-            if (
-                resume !== undefined
-            ) {
-
-                updateData.resume =
-                    resume;
-
-            }
-
 
             const updatedUser =
                 await User.findByIdAndUpdate(
@@ -892,11 +800,9 @@ app.put(
                         runValidators: true
                     }
 
-                )
-                .select(
+                ).select(
                     "-password"
                 );
-
 
             if (!updatedUser) {
 
@@ -913,7 +819,6 @@ app.put(
 
             }
 
-
             return res
                 .status(200)
                 .json({
@@ -929,7 +834,6 @@ app.put(
                 });
 
         }
-
         catch (error) {
 
             console.error(
@@ -953,14 +857,16 @@ app.put(
     }
 );
 
-
 // =====================================================
-// RESUME UPLOAD
+// UPLOAD RESUME
 // =====================================================
 
 app.post(
     "/api/profile/resume",
-    upload.single("resume"),
+
+    upload.single(
+        "resume"
+    ),
 
     async (
         req,
@@ -972,7 +878,6 @@ app.post(
             const {
                 userId
             } = req.body;
-
 
             if (!userId) {
 
@@ -989,7 +894,6 @@ app.post(
 
             }
 
-
             if (!req.file) {
 
                 return res
@@ -1005,12 +909,10 @@ app.post(
 
             }
 
-
             const user =
                 await User.findById(
                     userId
                 );
-
 
             if (!user) {
 
@@ -1026,7 +928,6 @@ app.post(
 
                 }
 
-
                 return res
                     .status(404)
                     .json({
@@ -1040,6 +941,38 @@ app.post(
 
             }
 
+            // Delete old resume
+            if (
+                user.resume &&
+                user.resume.path
+            ) {
+
+                const oldRelativePath =
+                    user.resume.path.replace(
+                        "/uploads/",
+                        ""
+                    );
+
+                const oldFilePath =
+                    path.join(
+                        __dirname,
+                        "uploads",
+                        oldRelativePath
+                    );
+
+                if (
+                    fs.existsSync(
+                        oldFilePath
+                    )
+                ) {
+
+                    fs.unlinkSync(
+                        oldFilePath
+                    );
+
+                }
+
+            }
 
             user.resume = {
 
@@ -1054,9 +987,7 @@ app.post(
 
             };
 
-
             await user.save();
-
 
             return res
                 .status(200)
@@ -1073,14 +1004,12 @@ app.post(
                 });
 
         }
-
         catch (error) {
 
             console.error(
                 "Resume upload error:",
                 error
             );
-
 
             if (
                 req.file &&
@@ -1094,7 +1023,6 @@ app.post(
                 );
 
             }
-
 
             return res
                 .status(500)
@@ -1113,392 +1041,8 @@ app.post(
     }
 );
 
-
 // =====================================================
-// GET CANDIDATES
-// =====================================================
-
-app.get(
-    "/api/candidates",
-    async (
-        req,
-        res
-    ) => {
-
-        try {
-
-            const {
-                search,
-                skill,
-                location
-            } = req.query;
-
-
-            const query = {
-
-                role:
-                    "candidate"
-
-            };
-
-
-            if (search) {
-
-                const regex =
-                    new RegExp(
-                        search.trim(),
-                        "i"
-                    );
-
-
-                query.$or = [
-
-                    {
-                        name:
-                            regex
-                    },
-
-                    {
-                        headline:
-                            regex
-                    }
-
-                ];
-
-            }
-
-
-            if (skill) {
-
-                query.skills = {
-
-                    $regex:
-                        skill.trim(),
-
-                    $options:
-                        "i"
-
-                };
-
-            }
-
-
-            if (location) {
-
-                query.location = {
-
-                    $regex:
-                        location.trim(),
-
-                    $options:
-                        "i"
-
-                };
-
-            }
-
-
-            const candidates =
-                await User.find(
-                    query
-                )
-                .select(
-                    "-password"
-                )
-                .sort({
-
-                    createdAt:
-                        -1
-
-                });
-
-
-            return res
-                .status(200)
-                .json({
-
-                    success: true,
-
-                    candidates:
-                        candidates
-
-                });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Get candidates error:",
-                error
-            );
-
-            return res
-                .status(500)
-                .json({
-
-                    success: false,
-
-                    message:
-                        "Unable to load candidates"
-
-                });
-
-        }
-
-    }
-);
-
-
-// =====================================================
-// SHORTLIST CANDIDATE
-// =====================================================
-
-app.post(
-    "/api/candidates/:id/shortlist",
-    async (
-        req,
-        res
-    ) => {
-
-        try {
-
-            const candidateId =
-                req.params.id;
-
-
-            if (
-                !mongoose.Types.ObjectId.isValid(
-                    candidateId
-                )
-            ) {
-
-                return res
-                    .status(400)
-                    .json({
-
-                        success: false,
-
-                        message:
-                            "Invalid candidate ID"
-
-                    });
-
-            }
-
-
-            const candidate =
-                await User.findById(
-                    candidateId
-                );
-
-
-            if (!candidate) {
-
-                return res
-                    .status(404)
-                    .json({
-
-                        success: false,
-
-                        message:
-                            "Candidate not found"
-
-                    });
-
-            }
-
-
-            const existing =
-                await Shortlist.findOne({
-
-                    candidateId:
-                        candidateId
-
-                });
-
-
-            if (existing) {
-
-                return res
-                    .status(200)
-                    .json({
-
-                        success: true,
-
-                        message:
-                            "Candidate is already shortlisted",
-
-                        shortlisted:
-                            true
-
-                    });
-
-            }
-
-
-            await Shortlist.create({
-
-                candidateId:
-                    candidateId
-
-            });
-
-
-            return res
-                .status(201)
-                .json({
-
-                    success: true,
-
-                    message:
-                        "Candidate shortlisted successfully",
-
-                    shortlisted:
-                        true
-
-                });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Shortlist error:",
-                error
-            );
-
-            return res
-                .status(500)
-                .json({
-
-                    success: false,
-
-                    message:
-                        "Unable to shortlist candidate"
-
-                });
-
-        }
-
-    }
-);
-
-
-// =====================================================
-// REMOVE SHORTLIST
-// =====================================================
-
-app.delete(
-    "/api/candidates/:id/shortlist",
-    async (
-        req,
-        res
-    ) => {
-
-        try {
-
-            await Shortlist.findOneAndDelete({
-
-                candidateId:
-                    req.params.id
-
-            });
-
-
-            return res
-                .status(200)
-                .json({
-
-                    success: true,
-
-                    shortlisted:
-                        false
-
-                });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Remove shortlist error:",
-                error
-            );
-
-            return res
-                .status(500)
-                .json({
-
-                    success: false,
-
-                    message:
-                        "Unable to remove candidate from shortlist"
-
-                });
-
-        }
-
-    }
-);
-
-
-// =====================================================
-// CHECK SHORTLIST
-// =====================================================
-
-app.get(
-    "/api/candidates/:id/shortlist",
-    async (
-        req,
-        res
-    ) => {
-
-        try {
-
-            const item =
-                await Shortlist.findOne({
-
-                    candidateId:
-                        req.params.id
-
-                });
-
-
-            return res
-                .status(200)
-                .json({
-
-                    success: true,
-
-                    shortlisted:
-                        !!item
-
-                });
-
-        }
-
-        catch (error) {
-
-            return res
-                .status(500)
-                .json({
-
-                    success: false,
-
-                    message:
-                        "Unable to check shortlist"
-
-                });
-
-        }
-
-    }
-);
-
-
-// =====================================================
-// GET JOBS
+// GET ALL JOBS
 // =====================================================
 
 app.get(
@@ -1510,86 +1054,18 @@ app.get(
 
         try {
 
-            const {
-                search,
-                location,
-                type
-            } = req.query;
-
-
-            const query = {};
-
-
-            if (search) {
-
-                const regex =
-                    new RegExp(
-                        search.trim(),
-                        "i"
-                    );
-
-
-                query.$or = [
-
-                    {
-                        title:
-                            regex
-                    },
-
-                    {
-                        company:
-                            regex
-                    },
-
-                    {
-                        description:
-                            regex
-                    }
-
-                ];
-
-            }
-
-
-            if (location) {
-
-                query.location = {
-
-                    $regex:
-                        location.trim(),
-
-                    $options:
-                        "i"
-
-                };
-
-            }
-
-
-            if (type) {
-
-                query.jobType =
-                    type;
-
-            }
-
-
             const jobs =
-                await Job
-                    .find(query)
+                await Job.find()
                     .sort({
                         createdAt:
                             -1
-                    })
-                    .lean();
-
+                    });
 
             return res
                 .status(200)
                 .json({
 
-                    success:
-                        true,
+                    success: true,
 
                     jobs:
                         jobs
@@ -1597,11 +1073,10 @@ app.get(
                 });
 
         }
-
         catch (error) {
 
             console.error(
-                "GET /api/jobs error:",
+                "Get jobs error:",
                 error
             );
 
@@ -1609,14 +1084,10 @@ app.get(
                 .status(500)
                 .json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
-                        "Unable to load jobs",
-
-                    jobs:
-                        []
+                        "Unable to load jobs"
 
                 });
 
@@ -1625,9 +1096,8 @@ app.get(
     }
 );
 
-
 // =====================================================
-// GET ONE JOB
+// GET SINGLE JOB
 // =====================================================
 
 app.get(
@@ -1639,32 +1109,10 @@ app.get(
 
         try {
 
-            if (
-                !mongoose.Types.ObjectId.isValid(
-                    req.params.id
-                )
-            ) {
-
-                return res
-                    .status(400)
-                    .json({
-
-                        success:
-                            false,
-
-                        message:
-                            "Invalid job ID"
-
-                    });
-
-            }
-
-
             const job =
                 await Job.findById(
                     req.params.id
                 );
-
 
             if (!job) {
 
@@ -1672,8 +1120,7 @@ app.get(
                     .status(404)
                     .json({
 
-                        success:
-                            false,
+                        success: false,
 
                         message:
                             "Job not found"
@@ -1682,13 +1129,11 @@ app.get(
 
             }
 
-
             return res
                 .status(200)
                 .json({
 
-                    success:
-                        true,
+                    success: true,
 
                     job:
                         job
@@ -1696,15 +1141,13 @@ app.get(
                 });
 
         }
-
         catch (error) {
 
             return res
                 .status(500)
                 .json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Unable to load job"
@@ -1715,7 +1158,6 @@ app.get(
 
     }
 );
-
 
 // =====================================================
 // CREATE JOB
@@ -1736,107 +1178,71 @@ app.post(
                 location,
                 jobType,
                 salary,
-                experience,
-                skills,
                 description,
+                skills,
                 recruiterId
             } = req.body;
 
-
-            if (!title) {
+            if (
+                !title ||
+                !company
+            ) {
 
                 return res
                     .status(400)
                     .json({
 
-                        success:
-                            false,
+                        success: false,
 
                         message:
-                            "Job title is required"
+                            "Title and company are required"
 
                     });
 
             }
 
-
-            let skillArray = [];
-
-
-            if (
-                Array.isArray(
-                    skills
-                )
-            ) {
-
-                skillArray =
-                    skills;
-
-            }
-
-            else if (
-                typeof skills ===
-                "string"
-            ) {
-
-                skillArray =
-                    skills
-                        .split(",")
-                        .map(
-                            skill =>
-                                skill.trim()
-                        )
-                        .filter(Boolean);
-
-            }
-
-
             const job =
-                await Job.create({
+                new Job({
 
                     title:
                         title.trim(),
 
                     company:
-                        company ||
-                        "Company",
+                        company.trim(),
 
                     location:
-                        location ||
-                        "Location not specified",
+                        location || "",
 
                     jobType:
                         jobType ||
-                        "full-time",
+                        "Full-time",
 
                     salary:
-                        salary ||
-                        "Salary not specified",
-
-                    experience:
-                        experience ||
-                        "Experience not specified",
-
-                    skills:
-                        skillArray,
+                        salary || "",
 
                     description:
-                        description ||
-                        "",
+                        description || "",
+
+                    skills:
+                        Array.isArray(
+                            skills
+                        )
+                            ? skills
+                            : [],
 
                     recruiterId:
                         recruiterId ||
-                        undefined
+                        null
 
                 });
 
+            await job.save();
 
             return res
                 .status(201)
                 .json({
 
-                    success:
-                        true,
+                    success: true,
 
                     message:
                         "Job created successfully",
@@ -1847,7 +1253,6 @@ app.post(
                 });
 
         }
-
         catch (error) {
 
             console.error(
@@ -1859,11 +1264,9 @@ app.post(
                 .status(500)
                 .json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
-                        error.message ||
                         "Unable to create job"
 
                 });
@@ -1873,96 +1276,12 @@ app.post(
     }
 );
 
-
-// =====================================================
-// DELETE JOB
-// =====================================================
-
-app.delete(
-    "/api/jobs/:id",
-    async (
-        req,
-        res
-    ) => {
-
-        try {
-
-            const job =
-                await Job.findByIdAndDelete(
-                    req.params.id
-                );
-
-
-            if (!job) {
-
-                return res
-                    .status(404)
-                    .json({
-
-                        success:
-                            false,
-
-                        message:
-                            "Job not found"
-
-                    });
-
-            }
-
-
-            await Application.deleteMany({
-
-                jobId:
-                    req.params.id
-
-            });
-
-
-            return res
-                .status(200)
-                .json({
-
-                    success:
-                        true,
-
-                    message:
-                        "Job deleted successfully"
-
-                });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Delete job error:",
-                error
-            );
-
-            return res
-                .status(500)
-                .json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Unable to delete job"
-
-                });
-
-        }
-
-    }
-);
-
-
 // =====================================================
 // APPLY FOR JOB
 // =====================================================
 
 app.post(
-    "/api/applications",
+    "/api/jobs/:jobId/apply",
     async (
         req,
         res
@@ -1971,84 +1290,28 @@ app.post(
         try {
 
             const {
-                candidateId,
-                jobId,
-                coverMessage
+                candidateId
             } = req.body;
 
-
-            if (
-                !candidateId ||
-                !jobId
-            ) {
+            if (!candidateId) {
 
                 return res
                     .status(400)
                     .json({
 
-                        success:
-                            false,
+                        success: false,
 
                         message:
-                            "Candidate ID and Job ID are required"
+                            "Candidate ID is required"
 
                     });
 
             }
-
-
-            if (
-                !mongoose.Types.ObjectId.isValid(
-                    candidateId
-                ) ||
-                !mongoose.Types.ObjectId.isValid(
-                    jobId
-                )
-            ) {
-
-                return res
-                    .status(400)
-                    .json({
-
-                        success:
-                            false,
-
-                        message:
-                            "Invalid candidate or job ID"
-
-                    });
-
-            }
-
-
-            const candidate =
-                await User.findById(
-                    candidateId
-                );
-
-
-            if (!candidate) {
-
-                return res
-                    .status(404)
-                    .json({
-
-                        success:
-                            false,
-
-                        message:
-                            "Candidate not found"
-
-                    });
-
-            }
-
 
             const job =
                 await Job.findById(
-                    jobId
+                    req.params.jobId
                 );
-
 
             if (!job) {
 
@@ -2056,8 +1319,7 @@ app.post(
                     .status(404)
                     .json({
 
-                        success:
-                            false,
+                        success: false,
 
                         message:
                             "Job not found"
@@ -2066,67 +1328,53 @@ app.post(
 
             }
 
-
             const existing =
                 await Application.findOne({
 
-                    candidateId:
-                        candidateId,
-
                     jobId:
-                        jobId
+                        req.params.jobId,
+
+                    candidateId:
+                        candidateId
 
                 });
-
 
             if (existing) {
 
                 return res
-                    .status(409)
+                    .status(400)
                     .json({
 
-                        success:
-                            true,
-
-                        alreadyApplied:
-                            true,
+                        success: false,
 
                         message:
-                            "You have already applied for this job",
-
-                        application:
-                            existing
+                            "You have already applied for this job"
 
                     });
 
             }
 
-
             const application =
-                await Application.create({
+                new Application({
+
+                    jobId:
+                        req.params.jobId,
 
                     candidateId:
                         candidateId,
 
-                    jobId:
-                        jobId,
-
-                    coverMessage:
-                        coverMessage ||
-                        "",
-
                     status:
-                        "applied"
+                        "Applied"
 
                 });
 
+            await application.save();
 
             return res
                 .status(201)
                 .json({
 
-                    success:
-                        true,
+                    success: true,
 
                     message:
                         "Application submitted successfully",
@@ -2137,11 +1385,10 @@ app.post(
                 });
 
         }
-
         catch (error) {
 
             console.error(
-                "Application error:",
+                "Job application error:",
                 error
             );
 
@@ -2149,8 +1396,7 @@ app.post(
                 .status(500)
                 .json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
                         "Unable to submit application"
@@ -2162,13 +1408,12 @@ app.post(
     }
 );
 
-
 // =====================================================
-// CHECK APPLICATION
+// GET CANDIDATE APPLICATIONS
 // =====================================================
 
 app.get(
-    "/api/applications/check/:candidateId/:jobId",
+    "/api/applications/:candidateId",
     async (
         req,
         res
@@ -2176,183 +1421,25 @@ app.get(
 
         try {
 
-            const application =
-                await Application.findOne({
-
-                    candidateId:
-                        req.params.candidateId,
-
-                    jobId:
-                        req.params.jobId
-
-                });
-
-
-            return res
-                .status(200)
-                .json({
-
-                    success:
-                        true,
-
-                    applied:
-                        !!application,
-
-                    application:
-                        application ||
-                        null
-
-                });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Check application error:",
-                error
-            );
-
-            return res
-                .status(500)
-                .json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Unable to check application"
-
-                });
-
-        }
-
-    }
-);
-
-
-// =====================================================
-// GET ALL APPLICATIONS
-// =====================================================
-
-app.get(
-    "/api/applications",
-    async (
-        req,
-        res
-    ) => {
-
-        try {
-
-            const {
-                status,
-                search,
-                sort
-            } = req.query;
-
-
-            const query = {};
-
-
-            if (status) {
-
-                query.status =
-                    status;
-
-            }
-
-
-            let applications =
+            const applications =
                 await Application
-                    .find(query)
-                    .populate(
-                        "candidateId",
-                        "-password"
-                    )
+                    .find({
+                        candidateId:
+                            req.params.candidateId
+                    })
                     .populate(
                         "jobId"
                     )
                     .sort({
-                        createdAt:
-                            sort ===
-                            "oldest"
-                                ? 1
-                                : -1
-                    })
-                    .lean();
-
-
-            if (search) {
-
-                const text =
-                    search
-                        .trim()
-                        .toLowerCase();
-
-
-                applications =
-                    applications.filter(
-                        application => {
-
-                            const candidate =
-                                application
-                                    .candidateId;
-
-                            const job =
-                                application
-                                    .jobId;
-
-
-                            return (
-
-                                String(
-                                    candidate?.name ||
-                                    ""
-                                )
-                                .toLowerCase()
-                                .includes(text)
-
-                                ||
-
-                                String(
-                                    candidate?.email ||
-                                    ""
-                                )
-                                .toLowerCase()
-                                .includes(text)
-
-                                ||
-
-                                String(
-                                    job?.title ||
-                                    ""
-                                )
-                                .toLowerCase()
-                                .includes(text)
-
-                                ||
-
-                                String(
-                                    job?.company ||
-                                    ""
-                                )
-                                .toLowerCase()
-                                .includes(text)
-
-                            );
-
-                        }
-                    );
-
-            }
-
+                        appliedAt:
+                            -1
+                    });
 
             return res
                 .status(200)
                 .json({
 
-                    success:
-                        true,
+                    success: true,
 
                     applications:
                         applications
@@ -2360,11 +1447,10 @@ app.get(
                 });
 
         }
-
         catch (error) {
 
             console.error(
-                "Get applications error:",
+                "Applications error:",
                 error
             );
 
@@ -2372,14 +1458,10 @@ app.get(
                 .status(500)
                 .json({
 
-                    success:
-                        false,
+                    success: false,
 
                     message:
-                        "Unable to load applications",
-
-                    applications:
-                        []
+                        "Unable to load applications"
 
                 });
 
@@ -2387,458 +1469,6 @@ app.get(
 
     }
 );
-
-
-// =====================================================
-// UPDATE APPLICATION STATUS
-// =====================================================
-
-async function updateApplicationStatus(
-    req,
-    res
-) {
-
-    try {
-
-        const {
-            status
-        } = req.body;
-
-
-        const allowedStatuses = [
-
-            "applied",
-
-            "reviewing",
-
-            "shortlisted",
-
-            "rejected",
-
-            "selected"
-
-        ];
-
-
-        if (
-            !allowedStatuses.includes(
-                status
-            )
-        ) {
-
-            return res
-                .status(400)
-                .json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Invalid application status"
-
-                });
-
-        }
-
-
-        const application =
-            await Application.findByIdAndUpdate(
-
-                req.params.id,
-
-                {
-                    $set: {
-                        status:
-                            status
-                    }
-                },
-
-                {
-                    new:
-                        true
-                }
-
-            )
-            .populate(
-                "candidateId",
-                "-password"
-            )
-            .populate(
-                "jobId"
-            );
-
-
-        if (!application) {
-
-            return res
-                .status(404)
-                .json({
-
-                    success:
-                        false,
-
-                    message:
-                        "Application not found"
-
-                });
-
-        }
-
-
-        return res
-            .status(200)
-            .json({
-
-                success:
-                    true,
-
-                message:
-                    "Application status updated",
-
-                application:
-                    application
-
-            });
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Update application error:",
-            error
-        );
-
-        return res
-            .status(500)
-            .json({
-
-                success:
-                    false,
-
-                message:
-                    "Unable to update application"
-
-            });
-
-    }
-
-}
-
-
-
-
-// =====================================================
-// UPDATE APPLICATION STATUS
-// =====================================================
-
-app.patch(
-    "/api/applications/:id/status",
-    async (req, res) => {
-
-        try {
-
-            const applicationId =
-                String(req.params.id || "").trim();
-
-            const newStatus =
-                String(req.body.status || "").trim();
-
-
-            console.log(
-                "Updating application:",
-                applicationId,
-                "Status:",
-                newStatus
-            );
-
-
-            // Check ID
-            if (
-                !applicationId ||
-                !mongoose.Types.ObjectId.isValid(
-                    applicationId
-                )
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Invalid application ID"
-
-                });
-
-            }
-
-
-            // Allowed statuses
-            const statusMap = {
-
-                "Applied": "applied",
-
-                "Shortlisted": "shortlisted",
-
-                "Rejected": "rejected",
-
-                "Hired": "selected",
-
-                "applied": "applied",
-
-                "shortlisted": "shortlisted",
-
-                "rejected": "rejected",
-
-                "selected": "selected"
-
-            };
-
-
-            const finalStatus =
-                statusMap[newStatus];
-
-
-            if (!finalStatus) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Invalid application status"
-
-                });
-
-            }
-
-
-            // Find application
-            const application =
-                await Application.findById(
-                    applicationId
-                );
-
-
-            if (!application) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    message:
-                        "Application not found"
-
-                });
-
-            }
-
-
-            // Update
-            application.status =
-                finalStatus;
-
-
-            await application.save();
-
-
-            // Load complete application
-            const updatedApplication =
-                await Application
-                    .findById(
-                        application._id
-                    )
-                    .populate(
-                        "candidateId",
-                        "-password"
-                    )
-                    .populate(
-                        "jobId"
-                    )
-                    .lean();
-
-
-            return res.status(200).json({
-
-                success: true,
-
-                message:
-                    "Application status updated successfully",
-
-                application:
-                    updatedApplication
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "APPLICATION STATUS ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                message:
-                    error.message ||
-                    "Unable to update application status"
-
-            });
-
-        }
-
-    }
-);
-
-
-// Also support PUT
-app.put(
-    "/api/applications/:id/status",
-    async (req, res) => {
-
-        try {
-
-            const applicationId =
-                String(req.params.id || "").trim();
-
-            const newStatus =
-                String(req.body.status || "").trim();
-
-
-            const statusMap = {
-
-                "Applied": "applied",
-                "Shortlisted": "shortlisted",
-                "Rejected": "rejected",
-                "Hired": "selected",
-
-                "applied": "applied",
-                "shortlisted": "shortlisted",
-                "rejected": "rejected",
-                "selected": "selected"
-
-            };
-
-
-            const finalStatus =
-                statusMap[newStatus];
-
-
-            if (
-                !applicationId ||
-                !mongoose.Types.ObjectId.isValid(
-                    applicationId
-                )
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Invalid application ID"
-
-                });
-
-            }
-
-
-            if (!finalStatus) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Invalid application status"
-
-                });
-
-            }
-
-
-            const application =
-                await Application.findByIdAndUpdate(
-
-                    applicationId,
-
-                    {
-                        $set: {
-                            status:
-                                finalStatus
-                        }
-                    },
-
-                    {
-                        new: true
-                    }
-
-                )
-                .populate(
-                    "candidateId",
-                    "-password"
-                )
-                .populate(
-                    "jobId"
-                );
-
-
-            if (!application) {
-
-                return res.status(404).json({
-
-                    success: false,
-
-                    message:
-                        "Application not found"
-
-                });
-
-            }
-
-
-            return res.status(200).json({
-
-                success: true,
-
-                message:
-                    "Application status updated successfully",
-
-                application:
-                    application
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "PUT APPLICATION STATUS ERROR:",
-                error
-            );
-
-
-            return res.status(500).json({
-
-                success: false,
-
-                message:
-                    error.message ||
-                    "Unable to update application status"
-
-            });
-
-        }
-
-    }
-);
-
 
 // =====================================================
 // HEALTH CHECK
@@ -2855,8 +1485,7 @@ app.get(
             .status(200)
             .json({
 
-                success:
-                    true,
+                success: true,
 
                 message:
                     "HireFlow API is running successfully 🚀",
@@ -2869,10 +1498,12 @@ app.get(
     }
 );
 
+// =====================================================
+// ROOT PAGE
+// =====================================================
 
-// =====================================================
-// ROOT
-// =====================================================
+// IMPORTANT:
+// This MUST come after API routes.
 
 app.get(
     "/",
@@ -2881,54 +1512,15 @@ app.get(
         res
     ) => {
 
-        res.json({
-
-            message:
-                "Welcome to HireFlow API",
-
-            version:
-                "1.0.0"
-
-        });
-
-    }
-);
-
-
-// =====================================================
-// ERROR HANDLER
-// =====================================================
-
-app.use(
-    (
-        error,
-        req,
-        res,
-        next
-    ) => {
-
-        console.error(
-            "Server error:",
-            error
+        res.sendFile(
+            path.join(
+                __dirname,
+                "index.html"
+            )
         );
 
-
-        res
-            .status(500)
-            .json({
-
-                success:
-                    false,
-
-                message:
-                    error.message ||
-                    "Internal server error"
-
-            });
-
     }
 );
-
 
 // =====================================================
 // START SERVER
@@ -2939,7 +1531,7 @@ app.listen(
     () => {
 
         console.log(
-            `HireFlow API running on http://localhost:${PORT}`
+            `HireFlow server running on port ${PORT} 🚀`
         );
 
     }
