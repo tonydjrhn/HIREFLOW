@@ -2,152 +2,238 @@
    HIRE FLOW — REGISTRATION
 ========================================================= */
 
+"use strict";
+
+
+/* =========================================================
+   GET ELEMENTS
+========================================================= */
+
 const form = document.getElementById("registerForm");
 
 const password = document.getElementById("password");
 
-const passwordToggle = document.getElementById("passwordToggle");
+const passwordToggle =
+    document.getElementById("passwordToggle");
 
-const strengthBars = document.querySelectorAll(".strength-bars span");
+const strengthBars =
+    document.querySelectorAll(".strength-bars span");
 
-const strengthText = document.getElementById("strengthText");
+const strengthText =
+    document.getElementById("strengthText");
 
-const roleCards = document.querySelectorAll(".role-card");
+const roleCards =
+    document.querySelectorAll(".role-card");
 
-const successOverlay = document.getElementById("successOverlay");
+const successOverlay =
+    document.getElementById("successOverlay");
 
-const successBtn = document.getElementById("successBtn");
+const successBtn =
+    document.getElementById("successBtn");
+
+
+/* =========================================================
+   CHECK REQUIRED ELEMENTS
+========================================================= */
+
+if (!form) {
+    console.error("ERROR: registerForm not found.");
+}
+
+if (!password) {
+    console.error("ERROR: password input not found.");
+}
+
+if (!passwordToggle) {
+    console.error("ERROR: passwordToggle not found.");
+}
 
 
 /* =========================================================
    PASSWORD VISIBILITY
 ========================================================= */
 
-passwordToggle.addEventListener("click", () => {
+if (passwordToggle && password) {
 
-    const icon = passwordToggle.querySelector("i");
+    passwordToggle.addEventListener("click", () => {
 
-    if (password.type === "password") {
+        const icon = passwordToggle.querySelector("i");
 
-        password.type = "text";
+        if (password.type === "password") {
 
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
+            password.type = "text";
 
-        passwordToggle.setAttribute(
-            "aria-label",
-            "Hide password"
-        );
+            if (icon) {
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
 
-    } else {
+            passwordToggle.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
 
-        password.type = "password";
+        } else {
 
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
+            password.type = "password";
 
-        passwordToggle.setAttribute(
-            "aria-label",
-            "Show password"
-        );
+            if (icon) {
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
 
-    }
+            passwordToggle.setAttribute(
+                "aria-label",
+                "Show password"
+            );
 
-});
+        }
+
+    });
+
+}
 
 
 /* =========================================================
    PASSWORD STRENGTH
 ========================================================= */
 
-password.addEventListener("input", () => {
+if (password) {
 
-    const value = password.value;
+    password.addEventListener("input", () => {
 
-    let score = 0;
+        const value = password.value;
 
-
-    if (value.length >= 8) {
-        score++;
-    }
-
-    if (/[A-Z]/.test(value)) {
-        score++;
-    }
-
-    if (/[0-9]/.test(value)) {
-        score++;
-    }
-
-    if (/[^A-Za-z0-9]/.test(value)) {
-        score++;
-    }
+        let score = 0;
 
 
-    strengthBars.forEach(bar => {
-
-        bar.style.background = "#29292e";
-
-    });
-
-
-    if (score === 0) {
-
-        strengthText.textContent = "Password strength";
-        strengthText.style.color = "";
-
-    }
-
-
-    if (score === 1) {
-
-        strengthBars[0].style.background = "#f87171";
-
-        strengthText.textContent = "Weak password";
-        strengthText.style.color = "#f87171";
-
-    }
-
-
-    if (score === 2) {
-
-        strengthBars[0].style.background = "#fbbf24";
-        strengthBars[1].style.background = "#fbbf24";
-
-        strengthText.textContent = "Fair password";
-        strengthText.style.color = "#fbbf24";
-
-    }
-
-
-    if (score === 3) {
-
-        for (let i = 0; i < 3; i++) {
-
-            strengthBars[i].style.background = "#a78bfa";
-
-        }
-
-        strengthText.textContent = "Good password";
-        strengthText.style.color = "#a78bfa";
-
-    }
-
-
-    if (score === 4) {
+        /* Reset bars */
 
         strengthBars.forEach(bar => {
 
-            bar.style.background = "#34d399";
+            bar.style.background = "#29292e";
 
         });
 
-        strengthText.textContent = "Strong password";
-        strengthText.style.color = "#34d399";
 
-    }
+        /* Check password */
 
-});
+        if (value.length >= 8) {
+            score++;
+        }
+
+        if (/[A-Z]/.test(value)) {
+            score++;
+        }
+
+        if (/[0-9]/.test(value)) {
+            score++;
+        }
+
+        if (/[^A-Za-z0-9]/.test(value)) {
+            score++;
+        }
+
+
+        /* Score 0 */
+
+        if (score === 0) {
+
+            strengthText.textContent =
+                "Password strength";
+
+            strengthText.style.color = "";
+
+        }
+
+
+        /* Score 1 */
+
+        if (score === 1) {
+
+            if (strengthBars[0]) {
+                strengthBars[0].style.background =
+                    "#f87171";
+            }
+
+            strengthText.textContent =
+                "Weak password";
+
+            strengthText.style.color =
+                "#f87171";
+
+        }
+
+
+        /* Score 2 */
+
+        if (score === 2) {
+
+            if (strengthBars[0]) {
+                strengthBars[0].style.background =
+                    "#fbbf24";
+            }
+
+            if (strengthBars[1]) {
+                strengthBars[1].style.background =
+                    "#fbbf24";
+            }
+
+            strengthText.textContent =
+                "Fair password";
+
+            strengthText.style.color =
+                "#fbbf24";
+
+        }
+
+
+        /* Score 3 */
+
+        if (score === 3) {
+
+            for (let i = 0; i < 3; i++) {
+
+                if (strengthBars[i]) {
+
+                    strengthBars[i].style.background =
+                        "#a78bfa";
+
+                }
+
+            }
+
+            strengthText.textContent =
+                "Good password";
+
+            strengthText.style.color =
+                "#a78bfa";
+
+        }
+
+
+        /* Score 4 */
+
+        if (score === 4) {
+
+            strengthBars.forEach(bar => {
+
+                bar.style.background =
+                    "#34d399";
+
+            });
+
+            strengthText.textContent =
+                "Strong password";
+
+            strengthText.style.color =
+                "#34d399";
+
+        }
+
+    });
+
+}
 
 
 /* =========================================================
@@ -168,10 +254,14 @@ roleCards.forEach(card => {
         card.classList.add("selected");
 
 
-        const radio = card.querySelector("input");
+        const radio =
+            card.querySelector("input[type='radio']");
+
 
         if (radio) {
+
             radio.checked = true;
+
         }
 
     });
@@ -183,286 +273,391 @@ roleCards.forEach(card => {
    FORM SUBMISSION
 ========================================================= */
 
-form.addEventListener("submit", async event => {
+if (form) {
 
-    event.preventDefault();
+    form.addEventListener("submit", async event => {
 
-    console.log("Form submit triggered!");
-
-
-    /* =====================================================
-       GET FORM ELEMENTS
-    ===================================================== */
-
-    const fullName = document.getElementById("fullName");
-
-    const email = document.getElementById("email");
-
-    const passwordError =
-        document.getElementById("passwordError");
-
-    const nameError =
-        document.getElementById("nameError");
-
-    const emailError =
-        document.getElementById("emailError");
-
-    const terms =
-        document.getElementById("terms");
-
-
-    /* =====================================================
-       CLEAR OLD ERRORS
-    ===================================================== */
-
-    nameError.textContent = "";
-
-    emailError.textContent = "";
-
-    passwordError.textContent = "";
-
-
-    let valid = true;
-
-
-    /* =====================================================
-       NAME VALIDATION
-    ===================================================== */
-
-    if (fullName.value.trim().length < 2) {
-
-        nameError.textContent =
-            "Please enter your full name.";
-
-        valid = false;
-
-    }
-
-
-    /* =====================================================
-       EMAIL VALIDATION
-    ===================================================== */
-
-    const emailPattern =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
-    if (!emailPattern.test(email.value.trim())) {
-
-        emailError.textContent =
-            "Please enter a valid email address.";
-
-        valid = false;
-
-    }
-
-
-    /* =====================================================
-       PASSWORD VALIDATION
-    ===================================================== */
-
-    if (password.value.length < 8) {
-
-        passwordError.textContent =
-            "Password must contain at least 8 characters.";
-
-        valid = false;
-
-    }
-
-
-    /* =====================================================
-       TERMS VALIDATION
-    ===================================================== */
-
-    if (!terms.checked) {
-
-        alert(
-            "Please accept the Terms of Service and Privacy Policy."
-        );
-
-        valid = false;
-
-    }
-
-
-    if (!valid) {
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       CREATE ACCOUNT
-    ===================================================== */
-
-    const button =
-        document.getElementById("createAccountBtn");
-
-
-    button.disabled = true;
-
-    const buttonText =
-        button.querySelector("span");
-
-    if (buttonText) {
-
-        buttonText.textContent =
-            "Creating account...";
-
-    }
-
-
-    try {
+        event.preventDefault();
 
         console.log(
-            "Sending registration request... PRODUCTION"
+            "HireFlow: Form submit triggered."
         );
 
 
         /* =================================================
-           IMPORTANT:
-           DO NOT USE localhost HERE.
-           This works on Render because the frontend and
-           backend are served by the same Express server.
+           GET FORM FIELDS
         ================================================= */
 
-        const response = await fetch("/api/register", {
+        const fullName =
+            document.getElementById("fullName");
 
-            method: "POST",
+        const email =
+            document.getElementById("email");
 
-            headers: {
+        const passwordError =
+            document.getElementById("passwordError");
 
-                "Content-Type":
-                    "application/json"
+        const nameError =
+            document.getElementById("nameError");
 
-            },
+        const emailError =
+            document.getElementById("emailError");
 
-            body: JSON.stringify({
+        const terms =
+            document.getElementById("terms");
 
-                name:
-                    fullName.value.trim(),
-
-                email:
-                    email.value.trim(),
-
-                password:
-                    password.value
-
-            })
-
-        });
-
-
-        console.log(
-            "Response received:",
-            response.status
-        );
+        const button =
+            document.getElementById("createAccountBtn");
 
 
         /* =================================================
-           READ SERVER RESPONSE
+           CLEAR OLD ERRORS
         ================================================= */
 
-        const data = await response.json();
+        if (nameError) {
+            nameError.textContent = "";
+        }
+
+        if (emailError) {
+            emailError.textContent = "";
+        }
+
+        if (passwordError) {
+            passwordError.textContent = "";
+        }
 
 
-        console.log(
-            "Server response:",
-            data
-        );
+        let valid = true;
 
 
         /* =================================================
-           CHECK RESPONSE
+           NAME VALIDATION
         ================================================= */
 
-        if (!response.ok) {
+        if (
+            !fullName ||
+            fullName.value.trim().length < 2
+        ) {
 
-            throw new Error(
-                data.message ||
-                "Registration failed"
+            if (nameError) {
+
+                nameError.textContent =
+                    "Please enter your full name.";
+
+            }
+
+            valid = false;
+
+        }
+
+
+        /* =================================================
+           EMAIL VALIDATION
+        ================================================= */
+
+        const emailPattern =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+        if (
+            !email ||
+            !emailPattern.test(
+                email.value.trim()
+            )
+        ) {
+
+            if (emailError) {
+
+                emailError.textContent =
+                    "Please enter a valid email address.";
+
+            }
+
+            valid = false;
+
+        }
+
+
+        /* =================================================
+           PASSWORD VALIDATION
+        ================================================= */
+
+        if (
+            !password ||
+            password.value.length < 8
+        ) {
+
+            if (passwordError) {
+
+                passwordError.textContent =
+                    "Password must contain at least 8 characters.";
+
+            }
+
+            valid = false;
+
+        }
+
+
+        /* =================================================
+           TERMS VALIDATION
+        ================================================= */
+
+        if (!terms || !terms.checked) {
+
+            alert(
+                "Please accept the Terms of Service and Privacy Policy."
             );
 
+            valid = false;
+
         }
 
 
         /* =================================================
-           REGISTRATION SUCCESS
+           STOP IF INVALID
         ================================================= */
 
-        console.log(
-            "Registration successful:",
-            data
-        );
+        if (!valid) {
 
+            console.log(
+                "HireFlow: Form validation failed."
+            );
 
-        successOverlay.classList.add("active");
-
-        document.body.style.overflow = "hidden";
-
-
-    } catch (error) {
-
-        console.error(
-            "Registration error:",
-            error
-        );
-
-
-        alert(
-            error.message ||
-            "Something went wrong. Please try again."
-        );
-
-
-        button.disabled = false;
-
-
-        if (buttonText) {
-
-            buttonText.textContent =
-                "Create Account";
+            return;
 
         }
 
-    }
 
-});
+        /* =================================================
+           DISABLE BUTTON
+        ================================================= */
+
+        if (button) {
+
+            button.disabled = true;
+
+            const buttonText =
+                button.querySelector("span");
+
+            if (buttonText) {
+
+                buttonText.textContent =
+                    "Creating account...";
+
+            }
+
+        }
+
+
+        /* =================================================
+           SEND REGISTRATION REQUEST
+           
+           IMPORTANT:
+           We intentionally use "serverResult"
+           instead of "response".
+
+           NEVER use localhost here.
+        ================================================= */
+
+        try {
+
+            console.log(
+                "HireFlow: Sending registration request..."
+            );
+
+
+            const serverResult =
+                await fetch("/api/register", {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        name:
+                            fullName.value.trim(),
+
+                        email:
+                            email.value.trim(),
+
+                        password:
+                            password.value
+
+                    })
+
+                });
+
+
+            console.log(
+                "HireFlow: Server status =",
+                serverResult.status
+            );
+
+
+            /* =================================================
+               READ SERVER DATA
+            ================================================= */
+
+            let serverData = {};
+
+            try {
+
+                serverData =
+                    await serverResult.json();
+
+            } catch (jsonError) {
+
+                console.error(
+                    "HireFlow: Server returned invalid JSON.",
+                    jsonError
+                );
+
+                throw new Error(
+                    "Server returned an invalid response."
+                );
+
+            }
+
+
+            console.log(
+                "HireFlow: Server data =",
+                serverData
+            );
+
+
+            /* =================================================
+               CHECK SERVER RESULT
+            ================================================= */
+
+            if (!serverResult.ok) {
+
+                throw new Error(
+                    serverData.message ||
+                    "Registration failed."
+                );
+
+            }
+
+
+            /* =================================================
+               REGISTRATION SUCCESS
+            ================================================= */
+
+            console.log(
+                "HireFlow: Registration successful!"
+            );
+
+
+            if (successOverlay) {
+
+                successOverlay.classList.add(
+                    "active"
+                );
+
+            }
+
+            document.body.style.overflow =
+                "hidden";
+
+
+        } catch (error) {
+
+            console.error(
+                "HireFlow: Registration error:",
+                error
+            );
+
+
+            alert(
+                error.message ||
+                "Unable to connect to the server. Please try again."
+            );
+
+
+            /* =================================================
+               ENABLE BUTTON AGAIN
+            ================================================= */
+
+            if (button) {
+
+                button.disabled = false;
+
+                const buttonText =
+                    button.querySelector("span");
+
+                if (buttonText) {
+
+                    buttonText.textContent =
+                        "Create Account";
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
 
 
 /* =========================================================
-   SUCCESS CONTINUE
+   SUCCESS BUTTON
 ========================================================= */
 
-successBtn.addEventListener("click", () => {
+if (successBtn) {
 
-    successOverlay.classList.remove("active");
+    successBtn.addEventListener(
+        "click",
+        () => {
 
-    document.body.style.overflow = "";
+            if (successOverlay) {
 
-});
+                successOverlay.classList.remove(
+                    "active"
+                );
+
+            }
+
+            document.body.style.overflow = "";
+
+        }
+    );
+
+}
 
 
 /* =========================================================
    ESCAPE KEY
 ========================================================= */
 
-document.addEventListener("keydown", event => {
+document.addEventListener(
+    "keydown",
+    event => {
 
-    if (
-        event.key === "Escape" &&
-        successOverlay.classList.contains("active")
-    ) {
+        if (
+            event.key === "Escape" &&
+            successOverlay &&
+            successOverlay.classList.contains("active")
+        ) {
 
-        successOverlay.classList.remove("active");
+            successOverlay.classList.remove(
+                "active"
+            );
 
-        document.body.style.overflow = "";
+            document.body.style.overflow = "";
+
+        }
 
     }
-
-});
+);
 
 
 /* =========================================================
@@ -476,4 +671,8 @@ console.log(
 
 console.log(
     "Registration interface initialized."
+);
+
+console.log(
+    "Production API: /api/register"
 );
