@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="HireFlow - AI-powered recruitment and career platform.">
+
+    <title>HireFlow — Find Work That Fits You</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVIGATION ================= -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="#" class="logo">
+                Hire<span>Flow</span>
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="#jobs">Find Jobs</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#companies">For Companies</a>
+
+            </nav>
+
+            <div class="nav-actions">
+
+                <button class="btn btn-ghost" id="loginBtn">
+                    Sign In
+                </button>
+
+                <button class="btn btn-primary" id="getStartedBtn" onclick="window.location.href='register.html'"><butt</button>
+                    Get Started
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+            </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MOBILE MENU ================= -->
+
+    <div class="mobile-menu" id="mobileMenu">
+
+        <a href="#jobs">Find Jobs</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#companies">For Companies</a>
+
+        <div class="mobile-actions">
+
+            <button class="btn btn-ghost" id="mobileLoginBtn">
+                Sign In
+            </button>
+<button class="btn btn-primary" id="mobileGetStartedBtn" onclick="window.location.href='register.html'">
+    Get Started
+</button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= HERO ================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-container">
+
+                <!-- LEFT -->
+
+                <div class="hero-content">
+
+                    <div class="eyebrow">
+
+                        <span class="status-dot"></span>
+
+                        AI-powered career matching
+
+                    </div>
+
+                    <h1>
+                        Find work that
+                        <span>fits you.</span>
+                    </h1>
+
+                    <p class="hero-description">
+
+                        HireFlow connects your skills, experience and ambitions
+                        with opportunities where you can actually make an impact.
+
+                    </p>
+
+
+                    <div class="hero-buttons">
+
+                        <button class="btn btn-primary btn-large" id="heroStartBtn">
+
+                            Find Your Next Role
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                        <button class="btn btn-outline btn-large" id="exploreJobsBtn">
+
+                            Explore Jobs
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="hero-trust">
+
+                        <div class="avatar-stack">
+
+                            <div class="avatar">A</div>
+                            <div class="avatar">R</div>
+                            <div class="avatar">S</div>
+                            <div class="avatar">K</div>
+
+                        </div>
+
+                        <div>
+
+                            <strong>12,000+</strong>
+
+                            <span>professionals already exploring</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT AI CARD -->
+
+                <div class="hero-visual">
+
+                    <div class="glow glow-one"></div>
+                    <div class="glow glow-two"></div>
+
+
+                    <div class="ai-card">
+
+                        <div class="ai-card-top">
+
+                            <div class="ai-label">
+
+                                <div class="ai-icon">
+                                    <i class="fa-solid fa-sparkles"></i>
+                                </div>
+
+                                <div>
+                                    <small>HIRE FLOW AI</small>
+                                    <strong>Match Analysis</strong>
+                                </div>
+
+                            </div>
+
+                            <span class="live-badge">
+                                <span></span>
+                                LIVE
+                            </span>
+
+                        </div>
+
+
+                        <div class="candidate-card">
+
+                            <div class="company-logo">
+                                H
+                            </div>
+
+                            <div class="candidate-info">
+
+                                <strong>Full Stack Developer</strong>
+
+                                <span>
+                                    HireFlow Technologies
+                                </span>
+
+                                <small>
+                                    Bangalore · Hybrid
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="match-section">
+
+                            <div class="match-header">
+
+                                <div>
+                                    <span>AI Compatibility</span>
+                                    <strong>Excellent match</strong>
+                                </div>
+
+                                <div class="match-score">
+                                    94<span>%</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="progress-bar">
+
+                                <div class="progress-fill"></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="skills">
+
+                            <div class="skill skill-good">
+                                <i class="fa-solid fa-check"></i>
+                                React
+                            </div>
+
+                            <div class="skill skill-good">
+                                <i class="fa-solid fa-check"></i>
+                                Node.js
+                            </div>
+
+                            <div class="skill skill-good">
+                                <i class="fa-solid fa-check"></i>
+                                REST APIs
+                            </div>
+
+                            <div class="skill skill-warning">
+                                <i class="fa-solid fa-minus"></i>
+                                PostgreSQL
+                            </div>
+
+                        </div>
+
+
+                        <div class="ai-insight">
+
+                            <div class="insight-icon">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+
+                            <div>
+
+                                <strong>AI Insight</strong>
+
+                                <p>
+                                    Your backend experience makes you a strong
+                                    candidate for this role.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= STATS ================= -->
+
+        <section class="stats-section">
+
+            <div class="stats-container">
+
+                <div class="stat">
+
+                    <strong>25K+</strong>
+                    <span>Active candidates</span>
+
+                </div>
+
+                <div class="stat">
+
+                    <strong>4.8K+</strong>
+                    <span>Open positions</span>
+
+                </div>
+
+                <div class="stat">
+
+                    <strong>1,200+</strong>
+                    <span>Hiring companies</span>
+
+                </div>
+
+                <div class="stat">
+
+                    <strong>89%</strong>
+                    <span>Successful matches</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= JOB SEARCH ================= -->
+
+        <section class="jobs-section" id="jobs">
+
+            <div class="section-container">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-label">
+                            OPPORTUNITIES
+                        </span>
+
+                        <h2>
+                            Roles worth
+                            <span>exploring.</span>
+                        </h2>
+
+                    </div>
+
+                    <button class="text-button" id="viewAllJobsBtn">
+
+                        View all jobs
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="search-box">
+
+                    <div class="search-field">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="jobSearch"
+                            placeholder="Search jobs, skills or companies..."
+                        >
+
+                    </div>
+
+
+                    <div class="search-divider"></div>
+
+
+                    <div class="search-location">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <span>Any location</span>
+
+                    </div>
+
+
+                    <button class="search-button" id="searchBtn">
+
+                        Search
+
+                    </button>
+
+                </div>
+
+
+                <!-- JOB CARDS -->
+
+                <div class="job-grid" id="jobGrid">
+
+
+                    <article class="job-card">
+
+                        <div class="job-top">
+
+                            <div class="job-company-logo">
+                                G
+                            </div>
+
+                            <button class="bookmark-btn">
+                                <i class="fa-regular fa-bookmark"></i>
+                            </button>
+
+                        </div>
+
+                        <div class="job-content">
+
+                            <span class="job-type">
+                                FULL-TIME
+                            </span>
+
+                            <h3>Frontend Engineer</h3>
+
+                            <p class="company-name">
+                                GrowthLabs
+                            </p>
+
+                            <div class="job-meta">
+
+                                <span>
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    Bangalore
+                                </span>
+
+                                <span>
+                                    <i class="fa-solid fa-house"></i>
+                                    Hybrid
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="job-footer">
+
+                            <strong>
+                                ₹8–14 LPA
+                            </strong>
+
+                            <span>
+                                Posted 2 days ago
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="job-card">
+
+                        <div class="job-top">
+
+                            <div class="job-company-logo purple">
+                                N
+                            </div>
+
+                            <button class="bookmark-btn">
+                                <i class="fa-regular fa-bookmark"></i>
+                            </button>
+
+                        </div>
+
+                        <div class="job-content">
+
+                            <span class="job-type">
+                                FULL-TIME
+                            </span>
+
+                            <h3>Backend Developer</h3>
+
+                            <p class="company-name">
+                                Nova Systems
+                            </p>
+
+                            <div class="job-meta">
+
+                                <span>
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    Chennai
+                                </span>
+
+                                <span>
+                                    <i class="fa-solid fa-house"></i>
+                                    Remote
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="job-footer">
+
+                            <strong>
+                                ₹7–12 LPA
+                            </strong>
+
+                            <span>
+                                Posted 1 day ago
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="job-card">
+
+                        <div class="job-top">
+
+                            <div class="job-company-logo orange">
+                                Z
+                            </div>
+
+                            <button class="bookmark-btn">
+                                <i class="fa-regular fa-bookmark"></i>
+                            </button>
+
+                        </div>
+
+                        <div class="job-content">
+
+                            <span class="job-type">
+                                FULL-TIME
+                            </span>
+
+                            <h3>Full Stack Developer</h3>
+
+                            <p class="company-name">
+                                Zento Technologies
+                            </p>
+
+                            <div class="job-meta">
+
+                                <span>
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    Hyderabad
+                                </span>
+
+                                <span>
+                                    <i class="fa-solid fa-house"></i>
+                                    Hybrid
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="job-footer">
+
+                            <strong>
+                                ₹10–16 LPA
+                            </strong>
+
+                            <span>
+                                Posted 4 days ago
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= HOW IT WORKS ================= -->
+
+        <section class="how-section" id="how-it-works">
+
+            <div class="section-container">
+
+                <div class="center-heading">
+
+                    <span class="section-label">
+                        HOW IT WORKS
+                    </span>
+
+                    <h2>
+                        Your next opportunity,
+                        <span>simplified.</span>
+                    </h2>
+
+                    <p>
+                        From your first profile to your next offer,
+                        HireFlow keeps the entire journey in one place.
+                    </p>
+
+                </div>
+
+
+                <div class="steps">
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            01
+                        </div>
+
+                        <div class="step-icon">
+                            <i class="fa-regular fa-user"></i>
+                        </div>
+
+                        <h3>Build your profile</h3>
+
+                        <p>
+                            Add your experience, skills and career goals.
+                            Tell us what you're looking for.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step-line"></div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            02
+                        </div>
+
+                        <div class="step-icon">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+
+                        <h3>Get AI matched</h3>
+
+                        <p>
+                            Our matching engine compares your profile
+                            against relevant opportunities.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step-line"></div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            03
+                        </div>
+
+                        <div class="step-icon">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </div>
+
+                        <h3>Make your move</h3>
+
+                        <p>
+                            Apply to the roles that fit and track your
+                            journey all the way to the offer.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= COMPANIES ================= -->
+
+        <section class="companies-section" id="companies">
+
+            <div class="section-container company-content">
+
+                <div class="company-copy">
+
+                    <span class="section-label">
+                        FOR COMPANIES
+                    </span>
+
+                    <h2>
+                        Hire people who
+                        <span>actually fit.</span>
+                    </h2>
+
+                    <p>
+                        Stop sorting through hundreds of resumes.
+                        HireFlow helps your team identify qualified
+                        candidates faster with intelligent matching.
+                    </p>
+
+                    <button class="btn btn-primary btn-large" id="companyBtn">
+
+                        Start Hiring
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="company-dashboard">
+
+                    <div class="dashboard-header">
+
+                        <div>
+                            <span>Recruiter dashboard</span>
+                            <strong>Candidate overview</strong>
+                        </div>
+
+                        <div class="dashboard-dot"></div>
+
+                    </div>
+
+
+                    <div class="candidate-row">
+
+                        <div class="mini-avatar">
+                            R
+                        </div>
+
+                        <div class="mini-info">
+
+                            <strong>Rahul Kumar</strong>
+
+                            <span>
+                                Full Stack Developer
+                            </span>
+
+                        </div>
+
+                        <div class="candidate-match">
+                            94%
+                        </div>
+
+                    </div>
+
+
+                    <div class="candidate-row">
+
+                        <div class="mini-avatar second">
+                            P
+                        </div>
+
+                        <div class="mini-info">
+
+                            <strong>Priya Sharma</strong>
+
+                            <span>
+                                Frontend Engineer
+                            </span>
+
+                        </div>
+
+                        <div class="candidate-match">
+                            91%
+                        </div>
+
+                    </div>
+
+
+                    <div class="candidate-row">
+
+                        <div class="mini-avatar third">
+                            A
+                        </div>
+
+                        <div class="mini-info">
+
+                            <strong>Arjun Menon</strong>
+
+                            <span>
+                                Backend Engineer
+                            </span>
+
+                        </div>
+
+                        <div class="candidate-match">
+                            88%
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CTA ================= -->
+
+        <section class="cta-section">
+
+            <div class="cta-container">
+
+                <div class="cta-glow"></div>
+
+                <span class="section-label">
+                    YOUR NEXT MOVE
+                </span>
+
+                <h2>
+                    Your next opportunity
+                    <br>
+                    could be <span>closer than you think.</span>
+                </h2>
+
+                <p>
+                    Build your profile. Discover your matches.
+                    Start your next chapter.
+                </p>
+
+                <button class="btn btn-light btn-large" id="ctaBtn">
+
+                    Get Started Free
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <a href="#" class="logo">
+                    Hire<span>Flow</span>
+                </a>
+
+                <p>
+                    Intelligent hiring.
+                    Better careers.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <div>
+
+                    <strong>Platform</strong>
+
+                    <a href="#jobs">Find Jobs</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#">For Candidates</a>
+                    <a href="#companies">For Companies</a>
+
+                </div>
+
+
+                <div>
+
+                    <strong>Company</strong>
+
+                    <a href="#">About</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Contact</a>
+
+                </div>
+
+
+                <div>
+
+                    <strong>Legal</strong>
+
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 HireFlow. Built for better careers.
+            </span>
+
+            <span>
+                Made with purpose.
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= MODAL ================= -->
+
+    <div class="modal-overlay" id="modalOverlay">
+
+        <div class="modal">
+
+            <button class="modal-close" id="modalClose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="modal-icon">
+                <i class="fa-solid fa-sparkles"></i>
+            </div>
+
+            <h2>Welcome to HireFlow</h2>
+
+            <p>
+                Your personalized career journey starts here.
+            </p>
+
+            <button class="btn btn-primary btn-large modal-action">
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>

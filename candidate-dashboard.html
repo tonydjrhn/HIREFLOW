@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HireFlow — Candidate Dashboard</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="candidate-dashboard.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         APP CONTAINER
+    ====================================================== -->
+
+    <div class="dashboard-app">
+
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <!-- Brand -->
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+
+                <div class="brand-text">
+                    <span>Hire</span><strong>Flow</strong>
+                </div>
+
+            </div>
+
+
+            <!-- Navigation -->
+
+            <nav class="sidebar-nav">
+
+                <div class="nav-section-title">
+                    WORKSPACE
+                </div>
+
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <i class="fa-solid fa-grid-2"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="candidate-jobs.html" class="nav-item">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Find Jobs</span>
+                    <span class="nav-badge">24</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="applications">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Applications</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="saved">
+                    <i class="fa-regular fa-bookmark"></i>
+                    <span>Saved Jobs</span>
+                </a>
+
+
+                <div class="nav-section-title second">
+                    MY CAREER
+                </div>
+
+               <a href="candidate-profile.html" class="nav-item">
+    <i class="fa-regular fa-user"></i>
+    <span>My Profile</span>
+</a>
+
+                <a href="#" class="nav-item" data-section="resume">
+                    <i class="fa-regular fa-file"></i>
+                    <span>Resume</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="skills">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Skills</span>
+                </a>
+
+
+                <div class="nav-section-title second">
+                    TOOLS
+                </div>
+
+                <a href="#" class="nav-item" data-section="ai">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>AI Career Coach</span>
+                    <span class="ai-tag">AI</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+
+            <!-- Sidebar Bottom -->
+
+            <div class="sidebar-bottom">
+
+                <div class="upgrade-card">
+
+                    <div class="upgrade-icon">
+                        <i class="fa-solid fa-sparkles"></i>
+                    </div>
+
+                    <div class="upgrade-content">
+
+                        <strong>Boost your career</strong>
+
+                        <p>
+                            Get AI-powered recommendations.
+                        </p>
+
+                        <button type="button">
+                            Explore AI
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button class="logout-btn" id="logoutBtn">
+
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
+
+            <header class="topbar">
+
+                <button
+                    type="button"
+                    class="mobile-menu-btn"
+                    id="mobileMenuBtn"
+                    aria-label="Open navigation"
+                >
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+
+                <!-- Search -->
+
+                <div class="global-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="globalSearch"
+                        placeholder="Search jobs, companies, skills..."
+                        autocomplete="off"
+                    >
+
+                    <span class="search-shortcut">
+                        Ctrl K
+                    </span>
+
+                </div>
+
+
+                <!-- Topbar Actions -->
+
+                <div class="topbar-actions">
+
+                    <button
+                        type="button"
+                        class="icon-btn notification-btn"
+                        id="notificationBtn"
+                        aria-label="Notifications"
+                    >
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <span class="notification-dot"></span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="icon-btn"
+                        id="helpBtn"
+                        aria-label="Help"
+                    >
+                        <i class="fa-regular fa-circle-question"></i>
+                    </button>
+
+
+                    <div class="topbar-divider"></div>
+
+
+                    <!-- User -->
+
+                    <button
+                        type="button"
+                        class="user-menu"
+                        id="userMenu"
+                    >
+
+                        <div class="user-avatar" id="userAvatar"
+     onclick="event.stopPropagation(); window.location.href='candidate-profile.html';">
+                            A
+                        </div>
+
+                        <div class="user-info">
+
+                            <strong id="topUserName">
+                                Candidate
+                            </strong>
+
+                            <span>
+                                Candidate
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-chevron-down"></i>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 DASHBOARD BODY
+            ================================================== -->
+
+            <div class="dashboard-container">
+
+
+                <!-- =================================================
+                     WELCOME HERO
+                ================================================== -->
+
+                <section class="welcome-section">
+
+                    <div class="welcome-content">
+
+                        <div class="welcome-eyebrow">
+
+                            <span class="status-pulse"></span>
+
+                            Your career workspace
+
+                        </div>
+
+                        <h1>
+                            Good morning,
+                            <span id="welcomeUserName">
+                                Candidate
+                            </span>
+                            <span class="wave">👋</span>
+                        </h1>
+
+                        <p>
+                            Discover opportunities, track your applications,
+                            and take the next step in your career.
+                        </p>
+
+
+                        <div class="welcome-actions">
+
+                            <button
+                                type="button"
+                                class="primary-btn"
+                                id="findJobsBtn"
+                            >
+
+                                <i class="fa-solid fa-magnifying-glass"></i>
+
+                                Find your next job
+
+                            </button>
+
+                            <button
+                                type="button"
+                                class="secondary-btn"
+                                id="updateProfileBtn"
+                            >
+
+                                <i class="fa-regular fa-user"></i>
+
+                                Update profile
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Hero Graphic -->
+
+                    <div class="hero-visual">
+
+                        <div class="hero-glow glow-one"></div>
+                        <div class="hero-glow glow-two"></div>
+
+                        <div class="career-orbit orbit-one"></div>
+                        <div class="career-orbit orbit-two"></div>
+                        <div class="career-orbit orbit-three"></div>
+
+                        <div class="hero-center">
+
+                            <div class="hero-center-icon">
+                                <i class="fa-solid fa-rocket"></i>
+                            </div>
+
+                        </div>
+
+                        <div class="floating-node node-one">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+
+                        <div class="floating-node node-two">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+
+                        <div class="floating-node node-three">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+
+                        <div class="floating-node node-four">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     STATISTICS
+                ================================================== -->
+
+                <section class="stats-grid">
+
+
+                    <!-- Applications -->
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon purple">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </div>
+
+                            <span class="stat-change positive">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                18%
+                            </span>
+
+                        </div>
+
+                        <div class="stat-value">
+                            <span id="applicationsCount">12</span>
+                        </div>
+
+                        <div class="stat-label">
+                            Applications sent
+                        </div>
+
+                        <div class="stat-mini-chart chart-purple">
+                            <span style="height:35%"></span>
+                            <span style="height:52%"></span>
+                            <span style="height:42%"></span>
+                            <span style="height:68%"></span>
+                            <span style="height:55%"></span>
+                            <span style="height:78%"></span>
+                            <span style="height:88%"></span>
+                        </div>
+
+                    </article>
+
+
+                    <!-- Interviews -->
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon blue">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+
+                            <span class="stat-change positive">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                12%
+                            </span>
+
+                        </div>
+
+                        <div class="stat-value">
+                            <span id="interviewsCount">04</span>
+                        </div>
+
+                        <div class="stat-label">
+                            Interviews
+                        </div>
+
+                        <div class="stat-progress">
+
+                            <div class="progress-track">
+                                <div
+                                    class="progress-fill blue-fill"
+                                    style="width:64%"
+                                ></div>
+                            </div>
+
+                            <span>
+                                64% response rate
+                            </span>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Shortlisted -->
+
+                    <article class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon green">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+
+                            <span class="stat-change positive">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                8%
+                            </span>
+
+                        </div>
+
+                        <div class="stat-value">
+                            <span id="shortlistedCount">03</span>
+                        </div>
+
+                        <div class="stat-label">
+                            Shortlisted
+                        </div>
+
+                        <div class="stat-status">
+                            <span class="status-dot green-dot"></span>
+                            Great progress
+                        </div>
+
+                    </article>
+
+
+                    <!-- Profile -->
+
+                    <article class="stat-card profile-stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-icon orange">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+
+                            <span class="profile-stat-label">
+                                Profile
+                            </span>
+
+                        </div>
+
+                        <div class="profile-stat-content">
+
+                            <div class="profile-ring">
+
+                                <svg viewBox="0 0 100 100">
+
+                                    <circle
+                                        class="ring-bg"
+                                        cx="50"
+                                        cy="50"
+                                        r="42"
+                                    ></circle>
+
+                                    <circle
+                                        class="ring-progress"
+                                        cx="50"
+                                        cy="50"
+                                        r="42"
+                                        stroke-dasharray="264"
+                                        stroke-dashoffset="58"
+                                    ></circle>
+
+                                </svg>
+
+                                <span>78%</span>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Almost there
+                                </strong>
+
+                                <p>
+                                    Complete your profile
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =================================================
+                     MAIN GRID
+                ================================================== -->
+
+                <section class="dashboard-grid">
+
+
+                    <!-- =================================================
+                         CAREER ANALYTICS
+                    ================================================== -->
+
+                    <article class="dashboard-card analytics-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-eyebrow">
+                                    PERFORMANCE
+                                </span>
+
+                                <h2>
+                                    Application activity
+                                </h2>
+
+                            </div>
+
+                            <select
+                                class="period-select"
+                                id="analyticsPeriod"
+                            >
+                                <option value="7">Last 7 days</option>
+                                <option value="30" selected>
+                                    Last 30 days
+                                </option>
+                                <option value="90">
+                                    Last 3 months
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="analytics-summary">
+
+                            <div>
+
+                                <strong>12</strong>
+
+                                <span>
+                                    applications
+                                </span>
+
+                            </div>
+
+                            <div class="summary-divider"></div>
+
+                            <div>
+
+                                <strong>3</strong>
+
+                                <span>
+                                    responses
+                                </span>
+
+                            </div>
+
+                            <div class="analytics-growth">
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                24.8%
+                            </div>
+
+                        </div>
+
+
+                        <!-- Graph -->
+
+                        <div class="analytics-chart">
+
+                            <div class="chart-y-axis">
+
+                                <span>16</span>
+                                <span>12</span>
+                                <span>8</span>
+                                <span>4</span>
+                                <span>0</span>
+
+                            </div>
+
+                            <div class="chart-area">
+
+                                <div class="chart-grid-lines">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+
+                                <svg
+                                    class="activity-line"
+                                    viewBox="0 0 700 220"
+                                    preserveAspectRatio="none"
+                                >
+
+                                    <defs>
+
+                                        <linearGradient
+                                            id="chartGradient"
+                                            x1="0"
+                                            y1="0"
+                                            x2="0"
+                                            y2="1"
+                                        >
+
+                                            <stop
+                                                offset="0%"
+                                                stop-opacity=".30"
+                                            />
+
+                                            <stop
+                                                offset="100%"
+                                                stop-opacity="0"
+                                            />
+
+                                        </linearGradient>
+
+                                    </defs>
+
+                                    <path
+                                        class="chart-area-fill"
+                                        d="M0,190
+                                           C60,175 80,160 120,168
+                                           S180,120 220,135
+                                           S280,95 320,112
+                                           S380,70 420,92
+                                           S480,115 520,76
+                                           S600,45 650,55
+                                           S680,25 700,35
+                                           L700,220 L0,220 Z"
+                                    ></path>
+
+                                    <path
+                                        class="chart-line"
+                                        d="M0,190
+                                           C60,175 80,160 120,168
+                                           S180,120 220,135
+                                           S280,95 320,112
+                                           S380,70 420,92
+                                           S480,115 520,76
+                                           S600,45 650,55
+                                           S680,25 700,35"
+                                    ></path>
+
+                                    <circle
+                                        class="chart-point"
+                                        cx="700"
+                                        cy="35"
+                                        r="5"
+                                    ></circle>
+
+                                </svg>
+
+                                <div class="chart-x-axis">
+
+                                    <span>Jun 10</span>
+                                    <span>Jun 15</span>
+                                    <span>Jun 20</span>
+                                    <span>Jun 25</span>
+                                    <span>Jun 30</span>
+                                    <span>Jul 05</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- =================================================
+                         AI CAREER COACH
+                    ================================================== -->
+
+                    <article class="dashboard-card ai-card">
+
+                        <div class="ai-background"></div>
+
+                        <div class="ai-card-content">
+
+                            <div class="ai-badge">
+
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                                AI POWERED
+
+                            </div>
+
+                            <h2>
+                                Your AI Career Coach
+                            </h2>
+
+                            <p>
+                                Get personalized job recommendations,
+                                resume insights, and interview preparation
+                                powered by AI.
+                            </p>
+
+
+                            <div class="ai-features">
+
+                                <div>
+                                    <i class="fa-solid fa-file-circle-check"></i>
+                                    Resume analysis
+                                </div>
+
+                                <div>
+                                    <i class="fa-solid fa-bullseye"></i>
+                                    Job matching
+                                </div>
+
+                                <div>
+                                    <i class="fa-solid fa-microphone-lines"></i>
+                                    Interview prep
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="ai-action-btn"
+                                id="aiCoachBtn"
+                            >
+
+                                Start AI coaching
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+                </section>
+
+
+                <!-- =================================================
+                     RECOMMENDED JOBS
+                ================================================== -->
+
+                <section class="jobs-section">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="card-eyebrow">
+                                CURATED FOR YOU
+                            </span>
+
+                            <h2>
+                                Recommended opportunities
+                            </h2>
+
+                        </div>
+
+                        <a href="#" id="viewAllJobs">
+                            View all jobs
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+
+                    <div class="jobs-grid">
+
+
+                        <!-- Job 1 -->
+
+                        <article class="job-card">
+
+                            <div class="job-card-top">
+
+                                <div class="company-logo company-google">
+                                    G
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="save-job-btn"
+                                    aria-label="Save job"
+                                >
+                                    <i class="fa-regular fa-bookmark"></i>
+                                </button>
+
+                            </div>
+
+                            <div class="job-company">
+                                Google
+                            </div>
+
+                            <h3>
+                                Software Engineer
+                            </h3>
+
+                            <div class="job-meta">
+
+                                <span>
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    Bengaluru
+                                </span>
+
+                                <span>
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    Full-time
+                                </span>
+
+                            </div>
+
+                            <div class="job-tags">
+
+                                <span>JavaScript</span>
+                                <span>React</span>
+                                <span>Node.js</span>
+
+                            </div>
+
+                            <div class="job-card-bottom">
+
+                                <strong>
+                                    ₹12–18 LPA
+                                </strong>
+
+                                <span>
+                                    2 days ago
+                                </span>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="job-apply-btn"
+                            >
+                                View opportunity
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+
+                        </article>
+
+
+                        <!-- Job 2 -->
+
+                        <article class="job-card">
+
+                            <div class="job-card-top">
+
+                                <div class="company-logo company-microsoft">
+                                    <i class="fa-brands fa-microsoft"></i>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="save-job-btn"
+                                    aria-label="Save job"
+                                >
+                                    <i class="fa-regular fa-bookmark"></i>
+                                </button>
+
+                            </div>
+
+                            <div class="job-company">
+                                Microsoft
+                            </div>
+
+                            <h3>
+                                Frontend Developer
+                            </h3>
+
+                            <div class="job-meta">
+
+                                <span>
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    Hyderabad
+                                </span>
+
+                                <span>
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    Full-time
+                                </span>
+
+                            </div>
+
+                            <div class="job-tags">
+
+                                <span>React</span>
+                                <span>TypeScript</span>
+                                <span>CSS</span>
+
+                            </div>
+
+                            <div class="job-card-bottom">
+
+                                <strong>
+                                    ₹10–16 LPA
+                                </strong>
+
+                                <span>
+                                    4 days ago
+                                </span>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="job-apply-btn"
+                            >
+                                View opportunity
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+
+                        </article>
+
+
+                        <!-- Job 3 -->
+
+                        <article class="job-card">
+
+                            <div class="job-card-top">
+
+                                <div class="company-logo company-amazon">
+                                    <i class="fa-brands fa-amazon"></i>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="save-job-btn"
+                                    aria-label="Save job"
+                                >
+                                    <i class="fa-regular fa-bookmark"></i>
+                                </button>
+
+                            </div>
+
+                            <div class="job-company">
+                                Amazon
+                            </div>
+
+                            <h3>
+                                Full Stack Developer
+                            </h3>
+
+                            <div class="job-meta">
+
+                                <span>
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    Chennai
+                                </span>
+
+                                <span>
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    Full-time
+                                </span>
+
+                            </div>
+
+                            <div class="job-tags">
+
+                                <span>Node.js</span>
+                                <span>AWS</span>
+                                <span>MongoDB</span>
+
+                            </div>
+
+                            <div class="job-card-bottom">
+
+                                <strong>
+                                    ₹14–22 LPA
+                                </strong>
+
+                                <span>
+                                    1 week ago
+                                </span>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="job-apply-btn"
+                            >
+                                View opportunity
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+
+                        </article>
+
+
+                        <!-- Job 4 -->
+
+                        <article class="job-card">
+
+                            <div class="job-card-top">
+
+                                <div class="company-logo company-accent">
+                                    <i class="fa-solid fa-layer-group"></i>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    class="save-job-btn"
+                                    aria-label="Save job"
+                                >
+                                    <i class="fa-regular fa-bookmark"></i>
+                                </button>
+
+                            </div>
+
+                            <div class="job-company">
+                                Zomato
+                            </div>
+
+                            <h3>
+                                Product Engineer
+                            </h3>
+
+                            <div class="job-meta">
+
+                                <span>
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    Bengaluru
+                                </span>
+
+                                <span>
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    Full-time
+                                </span>
+
+                            </div>
+
+                            <div class="job-tags">
+
+                                <span>Python</span>
+                                <span>React</span>
+                                <span>SQL</span>
+
+                            </div>
+
+                            <div class="job-card-bottom">
+
+                                <strong>
+                                    ₹9–15 LPA
+                                </strong>
+
+                                <span>
+                                    1 week ago
+                                </span>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="job-apply-btn"
+                            >
+                                View opportunity
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     BOTTOM GRID
+                ================================================== -->
+
+                <section class="bottom-grid">
+
+
+                    <!-- Recent Applications -->
+
+                    <article class="dashboard-card applications-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-eyebrow">
+                                    YOUR ACTIVITY
+                                </span>
+
+                                <h2>
+                                    Recent applications
+                                </h2>
+
+                            </div>
+
+                            <a href="#" id="viewApplications">
+                                View all
+                            </a>
+
+                        </div>
+
+
+                        <div class="application-list">
+
+
+                            <div class="application-item">
+
+                                <div class="application-company-icon">
+                                    G
+                                </div>
+
+                                <div class="application-info">
+
+                                    <strong>
+                                        Software Engineer
+                                    </strong>
+
+                                    <span>
+                                        Google · Bengaluru
+                                    </span>
+
+                                </div>
+
+                                <div class="application-status under-review">
+                                    Under review
+                                </div>
+
+                                <span class="application-date">
+                                    Jun 28
+                                </span>
+
+                            </div>
+
+
+                            <div class="application-item">
+
+                                <div class="application-company-icon microsoft-icon">
+                                    <i class="fa-brands fa-microsoft"></i>
+                                </div>
+
+                                <div class="application-info">
+
+                                    <strong>
+                                        Frontend Developer
+                                    </strong>
+
+                                    <span>
+                                        Microsoft · Hyderabad
+                                    </span>
+
+                                </div>
+
+                                <div class="application-status shortlisted">
+                                    Shortlisted
+                                </div>
+
+                                <span class="application-date">
+                                    Jun 25
+                                </span>
+
+                            </div>
+
+
+                            <div class="application-item">
+
+                                <div class="application-company-icon amazon-icon">
+                                    <i class="fa-brands fa-amazon"></i>
+                                </div>
+
+                                <div class="application-info">
+
+                                    <strong>
+                                        Full Stack Developer
+                                    </strong>
+
+                                    <span>
+                                        Amazon · Chennai
+                                    </span>
+
+                                </div>
+
+                                <div class="application-status applied">
+                                    Applied
+                                </div>
+
+                                <span class="application-date">
+                                    Jun 22
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Profile Completion -->
+
+                    <article class="dashboard-card completion-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <span class="card-eyebrow">
+                                    PROFILE
+                                </span>
+
+                                <h2>
+                                    Profile strength
+                                </h2>
+
+                            </div>
+
+                            <span class="completion-percentage">
+                                78%
+                            </span>
+
+                        </div>
+
+
+                        <div class="completion-visual">
+
+                            <div class="completion-ring-large">
+
+                                <svg viewBox="0 0 120 120">
+
+                                    <circle
+                                        cx="60"
+                                        cy="60"
+                                        r="50"
+                                        class="large-ring-bg"
+                                    ></circle>
+
+                                    <circle
+                                        cx="60"
+                                        cy="60"
+                                        r="50"
+                                        class="large-ring-progress"
+                                        stroke-dasharray="314"
+                                        stroke-dashoffset="69"
+                                    ></circle>
+
+                                </svg>
+
+                                <div class="completion-ring-text">
+
+                                    <strong>78%</strong>
+
+                                    <span>Complete</span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="completion-info">
+
+                                <p>
+                                    Complete these sections to
+                                    increase your visibility.
+                                </p>
+
+                                <ul>
+
+                                    <li class="completed">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Basic information
+                                    </li>
+
+                                    <li class="completed">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Skills
+                                    </li>
+
+                                    <li>
+                                        <i class="fa-regular fa-circle"></i>
+                                        Add experience
+                                    </li>
+
+                                    <li>
+                                        <i class="fa-regular fa-circle"></i>
+                                        Upload resume
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="complete-profile-btn"
+                            id="completeProfileBtn"
+                        >
+
+                            Complete profile
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </button>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =================================================
+                     FOOTER
+                ================================================== -->
+
+                <footer class="dashboard-footer">
+
+                    <div>
+                        © 2026 HireFlow. Built for the next generation.
+                    </div>
+
+                    <div class="footer-links">
+
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                        <a href="#">Help Center</a>
+
+                    </div>
+
+                </footer>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         NOTIFICATION PANEL
+    ====================================================== -->
+
+    <div
+        class="notification-panel"
+        id="notificationPanel"
+        aria-hidden="true"
+    >
+
+        <div class="panel-header">
+
+            <div>
+                <strong>Notifications</strong>
+                <span>3 new updates</span>
+            </div>
+
+            <button
+                type="button"
+                id="closeNotifications"
+                aria-label="Close notifications"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <div class="notification-list">
+
+            <div class="notification-item unread">
+
+                <div class="notification-icon purple">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+
+                <div>
+                    <strong>New job match</strong>
+                    <p>
+                        A Software Engineer role matches your profile.
+                    </p>
+                    <span>12 minutes ago</span>
+                </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+                <div class="notification-icon green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div>
+                    <strong>Application shortlisted</strong>
+                    <p>
+                        Your application has moved to the next stage.
+                    </p>
+                    <span>2 hours ago</span>
+                </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+                <div class="notification-icon blue">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+
+                <div>
+                    <strong>AI insight available</strong>
+                    <p>
+                        Your profile has a new career recommendation.
+                    </p>
+                    <span>Yesterday</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         OVERLAY
+    ====================================================== -->
+
+    <div
+        class="dashboard-overlay"
+        id="dashboardOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         DASHBOARD JAVASCRIPT
+    ====================================================== -->
+
+    <script src="candidate-dashboard.js"></script>
+
+</body>
+</html>

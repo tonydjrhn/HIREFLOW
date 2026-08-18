@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Sign in to your HireFlow account.">
+
+    <title>Sign In — HireFlow</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="login.css">
+
+</head>
+
+
+<body>
+
+    <!-- Background -->
+
+    <div class="bg-glow glow-one"></div>
+    <div class="bg-glow glow-two"></div>
+
+
+    <!-- Navigation -->
+
+    <header class="login-nav">
+
+        <a href="index.html" class="logo">
+            Hire<span>Flow</span>
+        </a>
+
+        <a href="register.html" class="register-link">
+            Don't have an account?
+            <strong>Create one</strong>
+        </a>
+
+    </header>
+
+
+    <!-- Main -->
+
+    <main class="login-page">
+
+
+        <!-- Login Card -->
+
+        <section class="login-card">
+
+
+            <div class="login-icon">
+
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+
+            </div>
+
+
+            <div class="login-heading">
+
+                <span class="eyebrow">
+
+                    <span class="live-dot"></span>
+
+                    Welcome back
+
+                </span>
+
+                <h1>
+                    Sign in to
+                    <span>HireFlow.</span>
+                </h1>
+
+                <p>
+                    Continue your career journey
+                    from where you left off.
+                </p>
+
+            </div>
+
+
+            <!-- Form -->
+
+            <form id="loginForm">
+
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        Email address
+                    </label>
+
+                    <div class="input-box">
+
+                        <i class="fa-regular fa-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                    <small
+                        class="error"
+                        id="loginEmailError">
+                    </small>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <div class="password-label">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <a href="#" id="forgotPassword">
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+
+                    <div class="input-box">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="togglePassword">
+
+                            <i class="fa-regular fa-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                    <small
+                        class="error"
+                        id="loginPasswordError">
+                    </small>
+
+                </div>
+
+
+                <!-- Remember -->
+
+                <label class="remember">
+
+                    <input
+                        type="checkbox"
+                        id="rememberMe"
+                    >
+
+                    <span class="custom-check">
+
+                        <i class="fa-solid fa-check"></i>
+
+                    </span>
+
+                    <span>
+                        Remember me
+                    </span>
+
+                </label>
+
+
+                <!-- Submit -->
+
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton">
+
+                    <span>
+                        Sign In
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
+
+
+                <!-- Divider -->
+
+                <div class="divider">
+
+                    <span></span>
+
+                    <small>
+                        OR
+                    </small>
+
+                    <span></span>
+
+                </div>
+
+
+                <!-- Demo login -->
+
+                <button
+                    type="button"
+                    class="demo-button"
+                    id="demoLogin">
+
+                    <i class="fa-solid fa-flask"></i>
+
+                    Try demo account
+
+                </button>
+
+
+                <!-- Register -->
+
+                <p class="register-prompt">
+
+                    New to HireFlow?
+
+                    <a href="register.html">
+                        Create an account
+                    </a>
+
+                </p>
+
+            </form>
+
+
+            <!-- Security -->
+
+            <div class="security-note">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <span>
+                    Your information is protected with
+                    secure authentication.
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- Side Visual -->
+
+        <section class="login-visual">
+
+            <div class="visual-content">
+
+                <span class="visual-label">
+                    HIRE FLOW INTELLIGENCE
+                </span>
+
+                <h2>
+                    Your next opportunity
+                    <span>is waiting.</span>
+                </h2>
+
+                <p>
+                    Pick up your journey, discover
+                    better matches and move closer
+                    to the role that's right for you.
+                </p>
+
+
+                <!-- Match preview -->
+
+                <div class="match-preview">
+
+                    <div class="preview-top">
+
+                        <div class="preview-ai-icon">
+                            <i class="fa-solid fa-sparkles"></i>
+                        </div>
+
+                        <div>
+
+                            <small>
+                                AI RECOMMENDATION
+                            </small>
+
+                            <strong>
+                                Strong match found
+                            </strong>
+
+                        </div>
+
+                        <span class="match-percent">
+                            94%
+                        </span>
+
+                    </div>
+
+
+                    <div class="preview-job">
+
+                        <div class="preview-company">
+                            H
+                        </div>
+
+                        <div class="preview-info">
+
+                            <strong>
+                                Full Stack Developer
+                            </strong>
+
+                            <span>
+                                Bangalore · Hybrid
+                            </span>
+
+                        </div>
+
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                    </div>
+
+
+                    <div class="preview-skills">
+
+                        <span>
+                            <i class="fa-solid fa-check"></i>
+                            React
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-check"></i>
+                            Node.js
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-check"></i>
+                            APIs
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Stats -->
+
+                <div class="visual-stats">
+
+                    <div>
+
+                        <strong>89%</strong>
+
+                        <span>
+                            Match success
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <strong>4.8K+</strong>
+
+                        <span>
+                            Open positions
+                        </span>
+
+                    </div>
+
+                    <div>
+
+                        <strong>1.2K+</strong>
+
+                        <span>
+                            Companies
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Forgot Password Modal -->
+
+    <div
+        class="forgot-overlay"
+        id="forgotOverlay">
+
+        <div class="forgot-modal">
+
+            <button
+                class="close-modal"
+                id="closeForgot">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+            <div class="forgot-icon">
+
+                <i class="fa-regular fa-envelope"></i>
+
+            </div>
+
+            <h2>
+                Reset your password
+            </h2>
+
+            <p>
+                Enter your email and we'll send
+                you instructions to reset your password.
+            </p>
+
+            <input
+                type="email"
+                id="resetEmail"
+                placeholder="you@example.com"
+            >
+
+            <button
+                class="reset-button"
+                id="resetButton">
+
+                Send Reset Link
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="login.js"></script>
+
+</body>
+
+</html>

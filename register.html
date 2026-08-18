@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Create your HireFlow account and discover opportunities that fit you.">
+
+    <title>Create Account — HireFlow</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Register CSS -->
+    <link rel="stylesheet" href="register.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         BACKGROUND
+         ========================================= -->
+
+    <div class="background-glow glow-one"></div>
+
+    <div class="background-glow glow-two"></div>
+
+
+    <!-- =========================================
+         TOP NAVIGATION
+         ========================================= -->
+
+    <header class="register-nav">
+
+        <a href="index.html" class="logo">
+            Hire<span>Flow</span>
+        </a>
+
+        <a href="index.html" class="back-link">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to home
+
+        </a>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+         ========================================= -->
+
+    <main class="register-page">
+
+
+        <!-- =====================================
+             LEFT BRANDING
+             ===================================== -->
+
+        <section class="register-intro">
+
+            <div class="intro-content">
+
+                <div class="eyebrow">
+
+                    <span class="status-dot"></span>
+
+                    Your career starts here
+
+                </div>
+
+
+                <h1>
+
+                    Build your profile.
+                    <span>Find your fit.</span>
+
+                </h1>
+
+
+                <p>
+
+                    Create one profile and let HireFlow
+                    connect your skills, experience and
+                    ambitions with opportunities built for you.
+
+                </p>
+
+
+                <!-- TRUST POINTS -->
+
+                <div class="trust-points">
+
+                    <div class="trust-point">
+
+                        <div class="trust-icon">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>AI-powered matching</strong>
+
+                            <span>
+                                Discover roles based on your actual skills.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="trust-point">
+
+                        <div class="trust-icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>Track your journey</strong>
+
+                            <span>
+                                Manage applications from one dashboard.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="trust-point">
+
+                        <div class="trust-icon">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+
+                        <div>
+
+                            <strong>Your data stays protected</strong>
+
+                            <span>
+                                Your profile is securely managed.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MINI STAT -->
+
+                <div class="intro-stat">
+
+                    <div class="mini-avatars">
+
+                        <div>A</div>
+                        <div>R</div>
+                        <div>S</div>
+                        <div>K</div>
+
+                    </div>
+
+                    <div>
+
+                        <strong>12,000+ professionals</strong>
+
+                        <span>
+                            are already exploring with HireFlow
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             REGISTER CARD
+             ===================================== -->
+
+        <section class="register-section">
+
+            <div class="register-card">
+
+
+                <!-- CARD HEADER -->
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>Create your account</h2>
+
+                        <p>
+                            It takes less than a minute.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PROGRESS -->
+
+                <div class="form-progress">
+
+                    <div class="progress-step active">
+
+                        <span>1</span>
+
+                        <small>
+                            Account
+                        </small>
+
+                    </div>
+
+
+                    <div class="progress-line"></div>
+
+
+                    <div class="progress-step">
+
+                        <span>2</span>
+
+                        <small>
+                            Profile
+                        </small>
+
+                    </div>
+
+
+                    <div class="progress-line"></div>
+
+
+                    <div class="progress-step">
+
+                        <span>3</span>
+
+                        <small>
+                            Preferences
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FORM -->
+
+                <form id="registerForm" method="post" action="#" onsubmit="return false;"></form>
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="form-group">
+
+                        <label for="fullName">
+                            Full name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-user"></i>
+
+                            <input
+                                type="text"
+                                id="fullName"
+                                name="fullName"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                required
+                            >
+
+                        </div>
+
+                        <small class="error-message"
+                            id="nameError"></small>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-envelope"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+                        <small class="error-message"
+                            id="emailError"></small>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <div class="label-row">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <span>
+                                Minimum 8 characters
+                            </span>
+
+                        </div>
+
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a strong password"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Show password">
+
+                                <i class="fa-regular fa-eye"></i>
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- PASSWORD STRENGTH -->
+
+                        <div class="password-strength">
+
+                            <div class="strength-bars">
+
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+
+                            </div>
+
+                            <small id="strengthText">
+                                Password strength
+                            </small>
+
+                        </div>
+
+                        <small class="error-message"
+                            id="passwordError"></small>
+
+                    </div>
+
+
+                    <!-- ROLE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            I am joining as
+                        </label>
+
+
+                        <div class="role-options">
+
+
+                            <label class="role-card selected">
+
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="candidate"
+                                    checked
+                                >
+
+                                <div class="role-icon">
+
+                                    <i class="fa-solid fa-user"></i>
+
+                                </div>
+
+
+                                <div class="role-info">
+
+                                    <strong>
+                                        Candidate
+                                    </strong>
+
+                                    <span>
+                                        Find your next opportunity
+                                    </span>
+
+                                </div>
+
+
+                                <div class="radio-indicator">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                </div>
+
+                            </label>
+
+
+                            <label class="role-card">
+
+                                <input
+                                    type="radio"
+                                    name="role"
+                                    value="recruiter"
+                                >
+
+                                <div class="role-icon">
+
+                                    <i class="fa-solid fa-building"></i>
+
+                                </div>
+
+
+                                <div class="role-info">
+
+                                    <strong>
+                                        Recruiter
+                                    </strong>
+
+                                    <span>
+                                        Find the right candidates
+                                    </span>
+
+                                </div>
+
+
+                                <div class="radio-indicator">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                </div>
+
+                            </label>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TERMS -->
+
+                    <label class="terms">
+
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            required
+                        >
+
+                        <span class="custom-checkbox">
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </span>
+
+                        <span class="terms-text">
+
+                            I agree to the
+                            <a href="#">Terms of Service</a>
+                            and
+                            <a href="#">Privacy Policy</a>.
+
+                        </span>
+
+                    </label>
+
+
+                    <!-- SUBMIT -->
+
+                    <button class="create-account-btn"
+        id="createAccountBtn"
+        form="registerForm">
+
+    <span>
+        Create Account
+    </span>
+
+    <i class="fa-solid fa-arrow-right"></i>
+
+</button>
+
+
+                    <!-- LOGIN -->
+
+                    <p class="login-prompt">
+
+                        Already have an account?
+
+                        <a href="login.html">
+    Sign in
+</a>
+
+                    </p>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         SUCCESS MODAL
+         ========================================= -->
+
+    <div
+        class="success-overlay"
+        id="successOverlay">
+
+        <div class="success-modal">
+
+            <div class="success-icon">
+
+                <i class="fa-solid fa-check"></i>
+
+            </div>
+
+            <h2>Account created!</h2>
+
+            <p>
+                Your HireFlow journey is ready to begin.
+            </p>
+
+            <button
+                class="success-btn"
+                id="successBtn">
+
+                Continue
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+         ========================================= -->
+
+    <script src="register.js"></script>
+
+</body>
+
+</html>
