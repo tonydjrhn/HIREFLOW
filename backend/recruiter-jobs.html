@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Jobs | HireFlow</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #17233c;
+        }
+
+        .topbar {
+            height: 80px;
+            background: white;
+            border-bottom: 1px solid #e5e8ef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #6947ff;
+        }
+
+        .back-btn {
+            border: 1px solid #dfe3eb;
+            background: white;
+            color: #17233c;
+            padding: 11px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: #f5f2ff;
+        }
+
+        .container {
+            width: min(1100px, 92%);
+            margin: 45px auto;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 8px;
+            font-size: 38px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #68758a;
+            font-size: 17px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e3e7ef;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 4px 18px rgba(30, 40, 70, 0.03);
+        }
+
+        .card h2 {
+            margin: 0 0 8px;
+            font-size: 23px;
+        }
+
+        .card-subtitle {
+            margin: 0 0 25px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            border: 1px solid #dfe4ed;
+            border-radius: 10px;
+            padding: 12px 13px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            color: #17233c;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #6947ff;
+            box-shadow: 0 0 0 3px rgba(105, 71, 255, 0.08);
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .primary-btn {
+            width: 100%;
+            border: none;
+            background: #6947ff;
+            color: white;
+            padding: 13px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .primary-btn:hover {
+            background: #5b3ce0;
+        }
+
+        .primary-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .message.success {
+            display: block;
+            background: #ecfdf3;
+            color: #16794a;
+            border: 1px solid #b8ebce;
+        }
+
+        .message.error {
+            display: block;
+            background: #fff1f2;
+            color: #b42318;
+            border: 1px solid #fecdd3;
+        }
+
+        .jobs-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .jobs-count {
+            color: #68758a;
+            font-size: 14px;
+        }
+
+        .job-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .job-card {
+            border: 1px solid #e5e8ef;
+            border-radius: 14px;
+            padding: 18px;
+            background: #fff;
+        }
+
+        .job-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .job-company {
+            color: #6947ff;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .meta {
+            background: #f1efff;
+            color: #5d43d2;
+            padding: 5px 9px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .job-description {
+            color: #68758a;
+            font-size: 14px;
+            line-height: 1.55;
+            margin-bottom: 14px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 45px 20px;
+            border: 1px dashed #d8dde8;
+            border-radius: 14px;
+            color: #718096;
+        }
+
+        .empty-icon {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #718096;
+        }
+
+        .delete-btn {
+            border: 1px solid #e5484d;
+            background: white;
+            color: #c92a2f;
+            padding: 8px 13px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #fff1f2;
+        }
+
+        @media (max-width: 850px) {
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 0 4%;
+            }
+
+            .page-header h1 {
+                font-size: 31px;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <div class="logo">
+            HireFlow
+        </div>
+
+        <button
+            class="back-btn"
+            id="backButton"
+        >
+            ← Back
+        </button>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="page-header">
+
+            <h1>
+                Manage Jobs
+            </h1>
+
+            <p>
+                Create and manage job opportunities for candidates.
+            </p>
+
+        </div>
+
+
+        <div class="layout">
+
+
+            <!-- =========================================
+                 CREATE JOB
+            ========================================== -->
+
+            <section class="card">
+
+                <h2>
+                    Create a Job
+                </h2>
+
+                <p class="card-subtitle">
+                    Add a new job opportunity to HireFlow.
+                </p>
+
+
+                <form id="jobForm">
+
+
+                    <div class="form-group">
+
+                        <label for="title">
+                            Job Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="title"
+                            placeholder="e.g. Software Developer"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="company">
+                            Company
+                        </label>
+
+                        <input
+                            type="text"
+                            id="company"
+                            placeholder="e.g. HireFlow Technologies"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="two-column">
+
+
+                        <div class="form-group">
+
+                            <label for="location">
+                                Location
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                placeholder="e.g. Bangalore"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="jobType">
+                                Job Type
+                            </label>
+
+                            <select id="jobType">
+
+                                <option value="full-time">
+                                    Full-time
+                                </option>
+
+                                <option value="part-time">
+                                    Part-time
+                                </option>
+
+                                <option value="internship">
+                                    Internship
+                                </option>
+
+                                <option value="contract">
+                                    Contract
+                                </option>
+
+                                <option value="freelance">
+                                    Freelance
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="two-column">
+
+
+                        <div class="form-group">
+
+                            <label for="salary">
+                                Salary
+                            </label>
+
+                            <input
+                                type="text"
+                                id="salary"
+                                placeholder="e.g. ₹5 - ₹8 LPA"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="experience">
+                                Experience
+                            </label>
+
+                            <input
+                                type="text"
+                                id="experience"
+                                placeholder="e.g. 0-2 years"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="skills">
+                            Required Skills
+                        </label>
+
+                        <input
+                            type="text"
+                            id="skills"
+                            placeholder="e.g. JavaScript, React, Node.js"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="description">
+                            Job Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Describe the role, responsibilities and requirements..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                        id="createJobButton"
+                    >
+                        Create Job
+                    </button>
+
+
+                    <div
+                        id="message"
+                        class="message"
+                    ></div>
+
+
+                </form>
+
+            </section>
+
+
+            <!-- =========================================
+                 EXISTING JOBS
+            ========================================== -->
+
+            <section class="card">
+
+                <div class="jobs-header">
+
+                    <div>
+
+                        <h2>
+                            Your Jobs
+                        </h2>
+
+                        <p class="card-subtitle">
+                            Jobs currently posted on HireFlow.
+                        </p>
+
+                    </div>
+
+                    <div
+                        class="jobs-count"
+                        id="jobsCount"
+                    >
+                        Loading...
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="job-list"
+                    id="jobList"
+                >
+
+                    <div class="loading">
+                        Loading jobs...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        // =====================================================
+        // API
+        // =====================================================
+
+        const API_URL =
+            "http://localhost:5000/api";
+
+
+        // =====================================================
+        // ELEMENTS
+        // =====================================================
+
+        const jobForm =
+            document.getElementById(
+                "jobForm"
+            );
+
+        const createJobButton =
+            document.getElementById(
+                "createJobButton"
+            );
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+        const jobList =
+            document.getElementById(
+                "jobList"
+            );
+
+        const jobsCount =
+            document.getElementById(
+                "jobsCount"
+            );
+
+        const backButton =
+            document.getElementById(
+                "backButton"
+            );
+
+
+        // =====================================================
+        // SHOW MESSAGE
+        // =====================================================
+
+        function showMessage(
+            text,
+            type
+        ) {
+
+            message.textContent =
+                text;
+
+            message.className =
+                `message ${type}`;
+
+        }
+
+
+        // =====================================================
+        // LOAD JOBS
+        // =====================================================
+
+        async function loadJobs() {
+
+            jobList.innerHTML = `
+                <div class="loading">
+                    Loading jobs...
+                </div>
+            `;
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/jobs`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load jobs."
+                    );
+
+                }
+
+
+                const jobs =
+                    Array.isArray(
+                        data.jobs
+                    )
+                        ? data.jobs
+                        : [];
+
+
+                renderJobs(
+                    jobs
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Load jobs error:",
+                    error
+                );
+
+                jobsCount.textContent =
+                    "Error";
+
+                jobList.innerHTML = `
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            ⚠️
+                        </div>
+
+                        <strong>
+                            Unable to load jobs
+                        </strong>
+
+                        <p>
+                            ${escapeHtml(
+                                error.message
+                            )}
+                        </p>
+
+                    </div>
+                `;
+
+            }
+
+        }
+
+
+        // =====================================================
+        // RENDER JOBS
+        // =====================================================
+
+        function renderJobs(
+            jobs
+        ) {
+
+            jobsCount.textContent =
+                `${jobs.length} job${
+                    jobs.length === 1
+                        ? ""
+                        : "s"
+                }`;
+
+
+            if (
+                jobs.length === 0
+            ) {
+
+                jobList.innerHTML = `
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            💼
+                        </div>
+
+                        <strong>
+                            No jobs posted yet
+                        </strong>
+
+                        <p>
+                            Create your first job using the form.
+                        </p>
+
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            jobList.innerHTML = "";
+
+
+            jobs.forEach(
+                job => {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+                    card.className =
+                        "job-card";
+
+
+                    const title =
+                        job.title ||
+                        job.jobTitle ||
+                        "Untitled Job";
+
+
+                    const company =
+                        job.company ||
+                        job.companyName ||
+                        "Company";
+
+
+                    const location =
+                        job.location ||
+                        "Location not specified";
+
+
+                    const jobType =
+                        job.jobType ||
+                        job.type ||
+                        "Full-time";
+
+
+                    const salary =
+                        job.salary ||
+                        "Salary not specified";
+
+
+                    const experience =
+                        job.experience ||
+                        "Experience not specified";
+
+
+                    const description =
+                        job.description ||
+                        "No description provided.";
+
+
+                    card.innerHTML = `
+
+                        <div class="job-title">
+                            ${escapeHtml(title)}
+                        </div>
+
+                        <div class="job-company">
+                            ${escapeHtml(company)}
+                        </div>
+
+                        <div class="job-meta">
+
+                            <span class="meta">
+                                📍 ${escapeHtml(location)}
+                            </span>
+
+                            <span class="meta">
+                                ${escapeHtml(jobType)}
+                            </span>
+
+                            <span class="meta">
+                                ${escapeHtml(salary)}
+                            </span>
+
+                            <span class="meta">
+                                ${escapeHtml(experience)}
+                            </span>
+
+                        </div>
+
+                        <div class="job-description">
+                            ${escapeHtml(description)}
+                        </div>
+
+                    `;
+
+
+                    if (
+                        job._id
+                    ) {
+
+                        const deleteButton =
+                            document.createElement(
+                                "button"
+                            );
+
+                        deleteButton.className =
+                            "delete-btn";
+
+                        deleteButton.textContent =
+                            "Delete Job";
+
+
+                        deleteButton.addEventListener(
+                            "click",
+                            function () {
+
+                                deleteJob(
+                                    job._id
+                                );
+
+                            }
+                        );
+
+
+                        card.appendChild(
+                            deleteButton
+                        );
+
+                    }
+
+
+                    jobList.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+        // =====================================================
+        // CREATE JOB
+        // =====================================================
+
+        jobForm.addEventListener(
+            "submit",
+            async function (
+                event
+            ) {
+
+                event.preventDefault();
+
+
+                createJobButton.disabled =
+                    true;
+
+                createJobButton.textContent =
+                    "Creating...";
+
+
+                message.className =
+                    "message";
+
+
+                const skillsText =
+                    document
+                        .getElementById(
+                            "skills"
+                        )
+                        .value
+                        .trim();
+
+
+                const skills =
+                    skillsText
+                        ? skillsText
+                            .split(",")
+                            .map(
+                                skill =>
+                                    skill.trim()
+                            )
+                            .filter(Boolean)
+                        : [];
+
+
+                const jobData = {
+
+                    title:
+                        document
+                            .getElementById(
+                                "title"
+                            )
+                            .value
+                            .trim(),
+
+                    company:
+                        document
+                            .getElementById(
+                                "company"
+                            )
+                            .value
+                            .trim(),
+
+                    location:
+                        document
+                            .getElementById(
+                                "location"
+                            )
+                            .value
+                            .trim(),
+
+                    jobType:
+                        document
+                            .getElementById(
+                                "jobType"
+                            )
+                            .value,
+
+                    salary:
+                        document
+                            .getElementById(
+                                "salary"
+                            )
+                            .value
+                            .trim(),
+
+                    experience:
+                        document
+                            .getElementById(
+                                "experience"
+                            )
+                            .value
+                            .trim(),
+
+                    skills:
+                        skills,
+
+                    description:
+                        document
+                            .getElementById(
+                                "description"
+                            )
+                            .value
+                            .trim()
+
+                };
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${API_URL}/jobs`,
+                            {
+
+                                method:
+                                    "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        jobData
+                                    )
+
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+
+                        throw new Error(
+                            data.message ||
+                            "Unable to create job."
+                        );
+
+                    }
+
+
+                    showMessage(
+                        "Job created successfully! 🎉",
+                        "success"
+                    );
+
+
+                    jobForm.reset();
+
+
+                    await loadJobs();
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Create job error:",
+                        error
+                    );
+
+
+                    showMessage(
+                        error.message ||
+                        "Unable to create job.",
+                        "error"
+                    );
+
+                }
+
+                finally {
+
+                    createJobButton.disabled =
+                        false;
+
+                    createJobButton.textContent =
+                        "Create Job";
+
+                }
+
+            }
+        );
+
+
+        // =====================================================
+        // DELETE JOB
+        // =====================================================
+
+        async function deleteJob(
+            jobId
+        ) {
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete this job?"
+                );
+
+
+            if (
+                !confirmed
+            ) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/jobs/${jobId}`,
+                        {
+                            method:
+                                "DELETE"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to delete job."
+                    );
+
+                }
+
+
+                await loadJobs();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Delete job error:",
+                    error
+                );
+
+                alert(
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        // =====================================================
+        // ESCAPE HTML
+        // =====================================================
+
+        function escapeHtml(
+            value
+        ) {
+
+            return String(
+                value ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        // =====================================================
+        // BACK BUTTON
+        // =====================================================
+
+        backButton.addEventListener(
+            "click",
+            function () {
+
+                window.location.href =
+                    "recruiter-dashboard.html";
+
+            }
+        );
+
+
+        // =====================================================
+        // START
+        // =====================================================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                loadJobs();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

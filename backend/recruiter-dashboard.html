@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>HireFlow - Recruiter Dashboard</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f5f7fb;
+
+            color: #172033;
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .topbar {
+
+            height: 74px;
+
+            background: white;
+
+            border-bottom:
+                1px solid #e5e8ef;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                0 6%;
+        }
+
+
+        .logo {
+
+            color: #6d4aff;
+
+            font-size: 27px;
+
+            font-weight: 800;
+        }
+
+
+        .logout-btn {
+
+            background: white;
+
+            color: #30384d;
+
+            border:
+                1px solid #dfe3ec;
+
+            padding:
+                10px 17px;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .logout-btn:hover {
+
+            border-color:
+                #6d4aff;
+
+            color:
+                #6d4aff;
+        }
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .container {
+
+            width:
+                min(
+                    1100px,
+                    92%
+                );
+
+            margin:
+                45px auto 70px;
+        }
+
+
+        .welcome {
+
+            margin-bottom:
+                35px;
+        }
+
+
+        .welcome h1 {
+
+            font-size:
+                34px;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .welcome p {
+
+            color:
+                #697386;
+
+            font-size:
+                16px;
+
+            line-height:
+                1.5;
+        }
+
+
+        /* =========================================
+           DASHBOARD CARDS
+        ========================================= */
+
+        .cards {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    1fr
+                );
+
+            gap:
+                20px;
+        }
+
+
+        .card {
+
+            background:
+                white;
+
+            border:
+                1px solid #e5e8ef;
+
+            border-radius:
+                18px;
+
+            padding:
+                30px;
+
+            text-decoration:
+                none;
+
+            color:
+                inherit;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(
+                    30,
+                    40,
+                    70,
+                    0.09
+                );
+
+            border-color:
+                #d7d0ff;
+        }
+
+
+        .icon {
+
+            width:
+                58px;
+
+            height:
+                58px;
+
+            border-radius:
+                15px;
+
+            background:
+                #f0edff;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            font-size:
+                28px;
+
+            margin-bottom:
+                20px;
+        }
+
+
+        .card h2 {
+
+            font-size:
+                21px;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .card p {
+
+            color:
+                #697386;
+
+            font-size:
+                14px;
+
+            line-height:
+                1.6;
+
+            margin-bottom:
+                14px;
+        }
+
+
+        .card-action {
+
+            color:
+                #6d4aff;
+
+            font-size:
+                14px;
+
+            font-weight:
+                700;
+        }
+
+
+        /* =========================================
+           SHORTLIST COUNT
+        ========================================= */
+
+        .shortlist-count {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                6px;
+
+            margin-bottom:
+                18px;
+
+            padding:
+                7px 11px;
+
+            background:
+                #f0edff;
+
+            color:
+                #6244d8;
+
+            border-radius:
+                20px;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+        }
+
+
+        /* =========================================
+           QUICK INFO
+        ========================================= */
+
+        .quick-info {
+
+            margin-top:
+                25px;
+
+            background:
+                white;
+
+            border:
+                1px solid #e5e8ef;
+
+            border-radius:
+                18px;
+
+            padding:
+                25px;
+        }
+
+
+        .quick-info h2 {
+
+            font-size:
+                20px;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .quick-info p {
+
+            color:
+                #697386;
+
+            font-size:
+                14px;
+
+            line-height:
+                1.6;
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (
+            max-width: 700px
+        ) {
+
+            .topbar {
+
+                padding:
+                    0 4%;
+            }
+
+
+            .container {
+
+                width:
+                    92%;
+
+                margin-top:
+                    30px;
+            }
+
+
+            .welcome h1 {
+
+                font-size:
+                    28px;
+            }
+
+
+            .cards {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .card {
+
+                padding:
+                    25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================= -->
+
+    <header class="topbar">
+
+        <div class="logo">
+            HireFlow
+        </div>
+
+
+        <button
+            class="logout-btn"
+            id="logoutButton"
+            type="button"
+        >
+            Logout
+        </button>
+
+    </header>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================= -->
+
+    <main class="container">
+
+
+        <section class="welcome">
+
+            <h1>
+                Recruiter Dashboard
+            </h1>
+
+            <p>
+                Manage candidates and find the right
+                talent for your organization.
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================================
+             DASHBOARD CARDS
+        ========================================= -->
+
+        <section class="cards">
+
+
+            <!-- =====================================
+                 FIND CANDIDATES
+            ====================================== -->
+
+            <a
+                class="card"
+                href="recruiter-candidates.html"
+            >
+
+                <div class="icon">
+                    🔎
+                </div>
+
+
+                <h2>
+                    Find Candidates
+                </h2>
+
+
+                <p>
+                    Search and discover candidates
+                    based on skills, location and
+                    professional profile.
+                </p>
+
+
+                <div class="card-action">
+                    Find Candidates →
+                </div>
+
+            </a>
+
+
+
+            <!-- =====================================
+                 SHORTLISTED CANDIDATES
+            ====================================== -->
+
+            <a
+                class="card"
+                href="shortlisted-candidates.html"
+            >
+
+                <div class="icon">
+                    ⭐
+                </div>
+
+
+                <h2>
+                    Shortlisted Candidates
+                </h2>
+
+
+                <!-- DYNAMIC COUNT -->
+
+                <div
+                    class="shortlist-count"
+                    id="shortlistCount"
+                >
+                    ⭐ 0 candidates shortlisted
+                </div>
+
+
+                <p>
+                    View candidates you have shortlisted
+                    and manage your shortlist.
+                </p>
+
+
+                <div class="card-action">
+                    View Shortlisted Candidates →
+                </div>
+
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =========================================
+             QUICK INFO
+        ========================================= -->
+
+        <section class="quick-info">
+
+            <h2>
+                Recruiter Tools
+            </h2>
+
+
+            <p>
+                Use Find Candidates to discover
+                professionals, view their profiles,
+                contact them, share their profiles,
+                and shortlist candidates for later.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
+
+    <script>
+
+
+        // =========================================
+        // SHORTLIST STORAGE KEY
+        // =========================================
+
+        const SHORTLIST_KEY =
+            "hireflow_shortlisted_ids";
+
+
+        // =========================================
+        // COUNT SHORTLISTED CANDIDATES
+        // =========================================
+
+      async function updateShortListCount() {
+    const countElement = document.getElementById("shortlistCount");
+
+    if (!countElement) return;
+
+    try {
+        const response = await fetch("http://localhost:5000/api/applications");
+
+        if (!response.ok) {
+            throw new Error("Failed to load applications");
+        }
+
+        const data = await response.json();
+
+        const applications = data.applications || [];
+
+        const count = applications.filter(
+            application =>
+                String(application.status || "").toLowerCase() === "shortlisted"
+        ).length;
+
+        const text =
+            count === 1
+                ? "1 candidate shortlisted"
+                : `${count} candidates shortlisted`;
+
+        countElement.textContent = `⭐ ${text}`;
+
+    } catch (error) {
+        console.error("Unable to update shortlist count:", error);
+        countElement.textContent = "⭐ 0 candidates shortlisted";
+    }
+}
+
+            let count = 0;
+
+
+            try {
+
+                const stored =
+                    localStorage.getItem(
+                        SHORTLIST_KEY
+                    );
+
+
+                if (stored) {
+
+                    const parsed =
+                        JSON.parse(
+                            stored
+                        );
+
+
+                    if (
+                        Array.isArray(
+                            parsed
+                        )
+                    ) {
+
+                        /*
+                           Remove duplicates just
+                           in case the same candidate
+                           was stored more than once.
+                        */
+
+                        const uniqueIds =
+                            new Set(
+                                parsed.map(
+                                    id =>
+                                        String(id)
+                                )
+                            );
+
+
+                        count =
+                            uniqueIds.size;
+
+                    }
+
+                }
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Could not read shortlist count:",
+                    error
+                );
+
+
+                count = 0;
+
+            }
+
+
+            const text =
+                count === 1
+                    ? "1 candidate shortlisted"
+                    : `${count} candidates shortlisted`;
+
+
+            countElement.textContent =
+                `⭐ ${text}`;
+
+        
+
+
+        // =========================================
+        // UPDATE WHEN PAGE OPENS
+        // =========================================
+
+        updateShortlistCount();
+
+
+        // =========================================
+        // UPDATE WHEN STORAGE CHANGES
+        // =========================================
+
+        window.addEventListener(
+            "storage",
+            function (event) {
+
+                if (
+                    event.key ===
+                    SHORTLIST_KEY
+                ) {
+
+                    updateShortlistCount();
+
+                }
+
+            }
+        );
+
+
+        // =========================================
+        // LOGOUT
+        // =========================================
+
+        document
+            .getElementById(
+                "logoutButton"
+            )
+            .addEventListener(
+                "click",
+                function () {
+
+
+                    /*
+                       Do NOT remove shortlist data
+                       when logging out.
+
+                       Only remove common login/session
+                       values.
+                    */
+
+                    const sessionKeys = [
+
+                        "token",
+
+                        "authToken",
+
+                        "accessToken",
+
+                        "user",
+
+                        "currentUser",
+
+                        "loggedInUser"
+
+                    ];
+
+
+                    sessionKeys.forEach(
+                        key => {
+
+                            localStorage.removeItem(
+                                key
+                            );
+
+                        }
+                    );
+
+
+                    /*
+                       Existing login page.
+                    */
+
+                    window.location.href =
+                        "login.html";
+
+                }
+            );
+
+
+    </script>
+
+
+</body>
+
+</html>

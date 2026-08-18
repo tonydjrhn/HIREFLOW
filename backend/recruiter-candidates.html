@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>HireFlow - Find Candidates</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .topbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e6e9f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+        }
+
+        .logo {
+            color: #6d4aff;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .back-btn {
+            border: 1px solid #dfe3ec;
+            background: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #f7f5ff;
+        }
+
+        .container {
+            width: min(1150px, 92%);
+            margin: 35px auto 60px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #697386;
+        }
+
+        .search-box {
+            background: white;
+            border: 1px solid #e5e8ef;
+            border-radius: 18px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dfe3ec;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #6d4aff;
+        }
+
+        .search-btn {
+            background: #6d4aff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0 22px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background: #5b3ee8;
+        }
+
+        .clear-btn {
+            background: white;
+            color: #555f73;
+            border: 1px solid #dfe3ec;
+            border-radius: 10px;
+            padding: 0 18px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .clear-btn:hover {
+            background: #f7f8fb;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .results-count {
+            color: #697386;
+            font-size: 14px;
+        }
+
+        .results {
+            display: grid;
+            gap: 15px;
+        }
+
+        .candidate {
+            background: white;
+            border: 1px solid #e5e8ef;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .avatar {
+            width: 65px;
+            height: 65px;
+            min-width: 65px;
+            border-radius: 50%;
+            background: #6d4aff;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .candidate-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .candidate-name {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .headline {
+            color: #6d4aff;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .location {
+            color: #697386;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .skill {
+            background: #f0edff;
+            color: #6244d8;
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* =========================================
+           ACTION BUTTONS
+        ========================================= */
+
+        .candidate-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .view-btn {
+            background: #6d4aff;
+            color: white;
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .view-btn:hover {
+            background: #5b3ee8;
+        }
+
+        .shortlist-btn {
+            background: white;
+            color: #6d4aff;
+            border: 1px solid #6d4aff;
+            padding: 10px 15px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .shortlist-btn:hover {
+            background: #f2efff;
+        }
+
+        .shortlist-btn.shortlisted {
+            background: #6d4aff;
+            color: white;
+            border-color: #6d4aff;
+        }
+
+        .shortlist-btn.shortlisted:hover {
+            background: #5b3ee8;
+        }
+
+        .empty {
+            background: white;
+            border: 1px solid #e5e8ef;
+            border-radius: 16px;
+            padding: 50px;
+            text-align: center;
+            color: #697386;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #697386;
+        }
+
+        /* =========================================
+           TOAST
+        ========================================= */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: #172033;
+            color: white;
+            padding: 13px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(15px);
+            pointer-events: none;
+            transition: 0.25s ease;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 800px) {
+
+            .search-box {
+                grid-template-columns: 1fr;
+            }
+
+            .search-btn,
+            .clear-btn {
+                padding: 13px;
+            }
+
+            .candidate {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .candidate-info {
+                width: calc(100% - 85px);
+            }
+
+            .candidate-actions {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .view-btn,
+            .shortlist-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .candidate-info {
+                width: 100%;
+            }
+
+            .avatar {
+                width: 55px;
+                height: 55px;
+                min-width: 55px;
+            }
+
+            .candidate-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 27px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="logo">
+        HireFlow
+    </div>
+
+    <button
+        class="back-btn"
+        id="backButton"
+    >
+        ← Back
+    </button>
+
+</header>
+
+
+<main class="container">
+
+
+    <div class="header">
+
+        <h1>
+            Find Candidates
+        </h1>
+
+        <p>
+            Search and discover candidates based on their skills,
+            location and professional profile.
+        </p>
+
+    </div>
+
+
+    <!-- =========================================
+         SEARCH
+    ========================================== -->
+
+    <section class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search name, skill or headline..."
+        >
+
+        <input
+            type="text"
+            id="skillInput"
+            placeholder="Skill"
+        >
+
+        <input
+            type="text"
+            id="locationInput"
+            placeholder="Location"
+        >
+
+        <button
+            class="search-btn"
+            id="searchButton"
+        >
+            Search
+        </button>
+
+        <button
+            class="clear-btn"
+            id="clearButton"
+        >
+            Clear
+        </button>
+
+    </section>
+
+
+    <!-- =========================================
+         RESULTS HEADER
+    ========================================== -->
+
+    <div class="results-header">
+
+        <h2>
+            Candidates
+        </h2>
+
+        <div
+            class="results-count"
+            id="resultsCount"
+        >
+            Loading...
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         RESULTS
+    ========================================== -->
+
+    <div
+        class="results"
+        id="results"
+    >
+
+        <div class="loading">
+            Loading candidates...
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+
+// =====================================================
+// API
+// =====================================================
+
+const API_URL =
+    "http://localhost:5000/api";
+
+
+// =====================================================
+// SHORTLIST STORAGE
+// =====================================================
+//
+// We keep BOTH:
+//
+// 1. IDs
+// 2. Full candidate objects
+//
+// This makes the shortlist data easy for the next
+// shortlisted-candidates.html stage to use.
+//
+
+const SHORTLIST_IDS_KEY =
+    "hireflow_shortlisted_ids";
+
+const SHORTLIST_DATA_KEY =
+    "hireflow_shortlisted_candidates";
+
+
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+const skillInput =
+    document.getElementById(
+        "skillInput"
+    );
+
+const locationInput =
+    document.getElementById(
+        "locationInput"
+    );
+
+const searchButton =
+    document.getElementById(
+        "searchButton"
+    );
+
+const clearButton =
+    document.getElementById(
+        "clearButton"
+    );
+
+const results =
+    document.getElementById(
+        "results"
+    );
+
+const resultsCount =
+    document.getElementById(
+        "resultsCount"
+    );
+
+const toast =
+    document.getElementById(
+        "toast"
+    );
+
+
+// =====================================================
+// GET SHORTLISTED IDS
+// =====================================================
+
+function getShortlistedIds() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                SHORTLIST_IDS_KEY
+            );
+
+        if (!saved) {
+            return [];
+        }
+
+        const parsed =
+            JSON.parse(saved);
+
+        if (!Array.isArray(parsed)) {
+            return [];
+        }
+
+        return parsed.map(
+            id => String(id)
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not read shortlist IDs:",
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
+
+// =====================================================
+// SAVE SHORTLISTED IDS
+// =====================================================
+
+function saveShortlistedIds(
+    ids
+) {
+
+    localStorage.setItem(
+        SHORTLIST_IDS_KEY,
+        JSON.stringify(ids)
+    );
+
+}
+
+
+// =====================================================
+// GET SHORTLISTED CANDIDATES
+// =====================================================
+
+function getShortlistedCandidates() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                SHORTLIST_DATA_KEY
+            );
+
+        if (!saved) {
+            return [];
+        }
+
+        const parsed =
+            JSON.parse(saved);
+
+        if (!Array.isArray(parsed)) {
+            return [];
+        }
+
+        return parsed;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not read shortlisted candidates:",
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
+
+// =====================================================
+// SAVE SHORTLISTED CANDIDATES
+// =====================================================
+
+function saveShortlistedCandidates(
+    candidates
+) {
+
+    localStorage.setItem(
+        SHORTLIST_DATA_KEY,
+        JSON.stringify(candidates)
+    );
+
+}
+
+
+// =====================================================
+// CHECK WHETHER CANDIDATE IS SHORTLISTED
+// =====================================================
+
+function isShortlisted(
+    candidateId
+) {
+
+    if (!candidateId) {
+        return false;
+    }
+
+    const ids =
+        getShortlistedIds();
+
+    return ids.includes(
+        String(candidateId)
+    );
+
+}
+
+
+// =====================================================
+// ADD CANDIDATE TO SHORTLIST
+// =====================================================
+
+function addToShortlist(
+    candidate
+) {
+
+    if (
+        !candidate ||
+        !candidate._id
+    ) {
+
+        alert(
+            "Candidate ID is missing."
+        );
+
+        return;
+
+    }
+
+
+    const candidateId =
+        String(candidate._id);
+
+
+    // -----------------------------------------
+    // SAVE ID
+    // -----------------------------------------
+
+    let ids =
+        getShortlistedIds();
+
+
+    if (
+        !ids.includes(
+            candidateId
+        )
+    ) {
+
+        ids.push(
+            candidateId
+        );
+
+        saveShortlistedIds(
+            ids
+        );
+
+    }
+
+
+    // -----------------------------------------
+    // SAVE FULL CANDIDATE
+    // -----------------------------------------
+
+    let candidates =
+        getShortlistedCandidates();
+
+
+    const alreadyExists =
+        candidates.some(
+            item =>
+                String(item._id) ===
+                candidateId
+        );
+
+
+    if (!alreadyExists) {
+
+        candidates.push(
+            candidate
+        );
+
+        saveShortlistedCandidates(
+            candidates
+        );
+
+    }
+
+
+    showToast(
+        "⭐ Candidate shortlisted"
+    );
+
+}
+
+
+// =====================================================
+// REMOVE CANDIDATE FROM SHORTLIST
+// =====================================================
+
+function removeFromShortlist(
+    candidateId
+) {
+
+    if (!candidateId) {
+        return;
+    }
+
+
+    const id =
+        String(candidateId);
+
+
+    // -----------------------------------------
+    // REMOVE ID
+    // -----------------------------------------
+
+    let ids =
+        getShortlistedIds();
+
+
+    ids =
+        ids.filter(
+            item =>
+                String(item) !== id
+        );
+
+
+    saveShortlistedIds(
+        ids
+    );
+
+
+    // -----------------------------------------
+    // REMOVE FULL OBJECT
+    // -----------------------------------------
+
+    let candidates =
+        getShortlistedCandidates();
+
+
+    candidates =
+        candidates.filter(
+            item =>
+                String(item._id) !== id
+        );
+
+
+    saveShortlistedCandidates(
+        candidates
+    );
+
+
+    showToast(
+        "Candidate removed from shortlist"
+    );
+
+}
+
+
+// =====================================================
+// TOGGLE SHORTLIST
+// =====================================================
+
+function toggleShortlist(
+    candidate,
+    button
+) {
+
+    if (
+        !candidate ||
+        !candidate._id
+    ) {
+
+        alert(
+            "Candidate ID is missing."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        isShortlisted(
+            candidate._id
+        )
+    ) {
+
+        removeFromShortlist(
+            candidate._id
+        );
+
+        button.classList.remove(
+            "shortlisted"
+        );
+
+        button.textContent =
+            "☆ Shortlist";
+
+    }
+
+    else {
+
+        addToShortlist(
+            candidate
+        );
+
+        button.classList.add(
+            "shortlisted"
+        );
+
+        button.textContent =
+            "✓ Shortlisted";
+
+    }
+
+}
+
+
+// =====================================================
+// TOAST
+// =====================================================
+
+let toastTimer = null;
+
+
+function showToast(
+    message
+) {
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function () {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2200
+        );
+
+}
+
+
+// =====================================================
+// LOAD CANDIDATES
+// =====================================================
+
+async function loadCandidates() {
+
+    results.innerHTML = `
+        <div class="loading">
+            Searching candidates...
+        </div>
+    `;
+
+
+    try {
+
+        const search =
+            searchInput.value.trim();
+
+        const skill =
+            skillInput.value.trim();
+
+        const location =
+            locationInput.value.trim();
+
+
+        const params =
+            new URLSearchParams();
+
+
+        if (search) {
+
+            params.set(
+                "search",
+                search
+            );
+
+        }
+
+
+        if (skill) {
+
+            params.set(
+                "skill",
+                skill
+            );
+
+        }
+
+
+        if (location) {
+
+            params.set(
+                "location",
+                location
+            );
+
+        }
+
+
+        const query =
+            params.toString();
+
+
+        const url =
+            query
+                ? `${API_URL}/candidates?${query}`
+                : `${API_URL}/candidates`;
+
+
+        console.log(
+            "Loading candidates from:",
+            url
+        );
+
+
+        const response =
+            await fetch(
+                url
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Candidates API response:",
+            data
+        );
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.message ||
+                "Could not load candidates."
+            );
+
+        }
+
+
+        renderCandidates(
+            Array.isArray(
+                data.candidates
+            )
+                ? data.candidates
+                : []
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Candidate search error:",
+            error
+        );
+
+
+        results.innerHTML = `
+
+            <div class="empty">
+
+                <h3>
+                    Unable to load candidates
+                </h3>
+
+                <p style="margin-top:8px;">
+                    ${escapeHtml(
+                        error.message
+                    )}
+                </p>
+
+            </div>
+
+        `;
+
+
+        resultsCount.textContent =
+            "Error";
+
+    }
+
+}
+
+
+// =====================================================
+// RENDER CANDIDATES
+// =====================================================
+
+function renderCandidates(
+    candidates
+) {
+
+    results.innerHTML =
+        "";
+
+
+    resultsCount.textContent =
+        `${candidates.length} candidate${
+            candidates.length === 1
+                ? ""
+                : "s"
+        } found`;
+
+
+    if (
+        !Array.isArray(
+            candidates
+        ) ||
+        candidates.length === 0
+    ) {
+
+        results.innerHTML = `
+
+            <div class="empty">
+
+                <h3>
+                    No candidates found
+                </h3>
+
+                <p style="margin-top:8px;">
+                    Try another name, skill or location.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    candidates.forEach(
+        candidate => {
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "candidate";
+
+
+            // =================================================
+            // AVATAR
+            // =================================================
+
+            const avatar =
+                document.createElement(
+                    "div"
+                );
+
+
+            avatar.className =
+                "avatar";
+
+
+            const name =
+                candidate.name ||
+                "Candidate";
+
+
+            if (
+                candidate.profilePhoto &&
+                candidate.profilePhoto.path
+            ) {
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                img.src =
+                    getFileUrl(
+                        candidate.profilePhoto.path
+                    );
+
+
+                img.alt =
+                    name;
+
+
+                img.onerror =
+                    function () {
+
+                        img.remove();
+
+                        avatar.textContent =
+                            name
+                                .charAt(0)
+                                .toUpperCase();
+
+                    };
+
+
+                avatar.appendChild(
+                    img
+                );
+
+            }
+
+            else {
+
+                avatar.textContent =
+                    name
+                        .charAt(0)
+                        .toUpperCase();
+
+            }
+
+
+            // =================================================
+            // INFO
+            // =================================================
+
+            const info =
+                document.createElement(
+                    "div"
+                );
+
+
+            info.className =
+                "candidate-info";
+
+
+            const nameElement =
+                document.createElement(
+                    "div"
+                );
+
+
+            nameElement.className =
+                "candidate-name";
+
+
+            nameElement.textContent =
+                name;
+
+
+            info.appendChild(
+                nameElement
+            );
+
+
+            // =================================================
+            // HEADLINE
+            // =================================================
+
+            const headline =
+                document.createElement(
+                    "div"
+                );
+
+
+            headline.className =
+                "headline";
+
+
+            headline.textContent =
+                candidate.headline ||
+                "Professional";
+
+
+            info.appendChild(
+                headline
+            );
+
+
+            // =================================================
+            // LOCATION
+            // =================================================
+
+            const location =
+                document.createElement(
+                    "div"
+                );
+
+
+            location.className =
+                "location";
+
+
+            location.textContent =
+                candidate.location
+                    ? `📍 ${candidate.location}`
+                    : "📍 Location not added";
+
+
+            info.appendChild(
+                location
+            );
+
+
+            // =================================================
+            // SKILLS
+            // =================================================
+
+            const skills =
+                document.createElement(
+                    "div"
+                );
+
+
+            skills.className =
+                "skills";
+
+
+            if (
+                Array.isArray(
+                    candidate.skills
+                ) &&
+                candidate.skills.length
+            ) {
+
+                candidate.skills
+                    .slice(
+                        0,
+                        8
+                    )
+                    .forEach(
+                        skill => {
+
+                            const tag =
+                                document.createElement(
+                                    "span"
+                                );
+
+
+                            tag.className =
+                                "skill";
+
+
+                            tag.textContent =
+                                skill;
+
+
+                            skills.appendChild(
+                                tag
+                            );
+
+                        }
+                    );
+
+            }
+
+
+            info.appendChild(
+                skills
+            );
+
+
+            // =================================================
+            // ACTIONS
+            // =================================================
+
+            const actions =
+                document.createElement(
+                    "div"
+                );
+
+
+            actions.className =
+                "candidate-actions";
+
+
+            // =================================================
+            // VIEW PROFILE
+            // =================================================
+
+            const viewButton =
+                document.createElement(
+                    "a"
+                );
+
+
+            viewButton.className =
+                "view-btn";
+
+
+            viewButton.textContent =
+                "View Profile →";
+
+
+            viewButton.href =
+                `profile-preview.html?id=${encodeURIComponent(
+                    candidate._id
+                )}`;
+
+
+            // =================================================
+            // SHORTLIST BUTTON
+            // =================================================
+
+            const shortlistButton =
+                document.createElement(
+                    "button"
+                );
+
+
+            shortlistButton.type =
+                "button";
+
+
+            shortlistButton.className =
+                "shortlist-btn";
+
+
+            const alreadyShortlisted =
+                isShortlisted(
+                    candidate._id
+                );
+
+
+            if (
+                alreadyShortlisted
+            ) {
+
+                shortlistButton.classList.add(
+                    "shortlisted"
+                );
+
+                shortlistButton.textContent =
+                    "✓ Shortlisted";
+
+            }
+
+            else {
+
+                shortlistButton.textContent =
+                    "☆ Shortlist";
+
+            }
+
+
+            shortlistButton.addEventListener(
+                "click",
+                function () {
+
+                    toggleShortlist(
+                        candidate,
+                        shortlistButton
+                    );
+
+                }
+            );
+
+
+            // =================================================
+            // BUILD CARD
+            // =================================================
+
+            actions.appendChild(
+                viewButton
+            );
+
+
+            actions.appendChild(
+                shortlistButton
+            );
+
+
+            card.appendChild(
+                avatar
+            );
+
+
+            card.appendChild(
+                info
+            );
+
+
+            card.appendChild(
+                actions
+            );
+
+
+            results.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// FILE URL
+// =====================================================
+
+function getFileUrl(
+    path
+) {
+
+    if (!path) {
+
+        return "";
+
+    }
+
+
+    if (
+        path.startsWith(
+            "http://"
+        ) ||
+        path.startsWith(
+            "https://"
+        )
+    ) {
+
+        return path;
+
+    }
+
+
+    return (
+        "http://localhost:5000" +
+        (
+            path.startsWith("/")
+                ? ""
+                : "/"
+        ) +
+        path
+    );
+
+}
+
+
+// =====================================================
+// ESCAPE HTML
+// =====================================================
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+// =====================================================
+// SEARCH BUTTON
+// =====================================================
+
+searchButton.addEventListener(
+    "click",
+    loadCandidates
+);
+
+
+// =====================================================
+// ENTER KEY
+// =====================================================
+
+[
+    searchInput,
+    skillInput,
+    locationInput
+].forEach(
+    input => {
+
+        input.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    loadCandidates();
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// =====================================================
+// CLEAR
+// =====================================================
+
+clearButton.addEventListener(
+    "click",
+    function () {
+
+        searchInput.value =
+            "";
+
+        skillInput.value =
+            "";
+
+        locationInput.value =
+            "";
+
+        loadCandidates();
+
+    }
+);
+
+
+// =====================================================
+// BACK
+// =====================================================
+
+document
+    .getElementById(
+        "backButton"
+    )
+    .addEventListener(
+        "click",
+        function () {
+
+            history.back();
+
+        }
+    );
+
+
+// =====================================================
+// START
+// =====================================================
+
+loadCandidates();
+
+
+</script>
+
+
+</body>
+
+</html>

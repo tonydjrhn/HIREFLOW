@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>HireFlow - Candidate Profile</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172b4d;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 25px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 34px;
+            font-weight: 800;
+            color: #6546f5;
+        }
+
+        .back-btn {
+            border: 1px solid #dbe2ea;
+            background: white;
+            padding: 12px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 25px;
+        }
+
+        .profile-card {
+            background: white;
+            border: 1px solid #e0e6ef;
+            border-radius: 22px;
+            padding: 35px;
+            margin-bottom: 25px;
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e8edf4;
+        }
+
+        .avatar {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            background: #eeeaff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            font-weight: 800;
+            color: #6546f5;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .name {
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .headline {
+            color: #6546f5;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .location {
+            color: #687d99;
+            font-size: 16px;
+        }
+
+        .section {
+            padding-top: 30px;
+        }
+
+        .section h2 {
+            font-size: 23px;
+            margin-bottom: 15px;
+        }
+
+        .about {
+            color: #5f7696;
+            line-height: 1.7;
+            font-size: 17px;
+            white-space: pre-line;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .contact-item {
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 13px;
+        }
+
+        .contact-label {
+            color: #7890ad;
+            font-size: 13px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .contact-value {
+            font-size: 16px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill {
+            background: #eeeaff;
+            color: #6546f5;
+            padding: 9px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .education-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .education {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .education-title {
+            font-weight: 800;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .education-details {
+            color: #657b99;
+            line-height: 1.6;
+        }
+
+        .resume-box {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .resume-name {
+            font-weight: 700;
+        }
+
+        .resume-btn {
+            background: #6546f5;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .empty {
+            color: #7186a0;
+        }
+
+        .loading,
+        .error {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        @media (max-width: 700px) {
+
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resume-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .name {
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="logo">
+        HireFlow
+    </div>
+
+    <button
+        class="back-btn"
+        onclick="goBack()"
+    >
+        ← Back
+    </button>
+
+</header>
+
+
+<main>
+
+    <div id="content">
+
+        <div class="loading">
+            Loading candidate profile...
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    const API_URL =
+        "http://localhost:5000/api";
+
+
+    // =====================================================
+    // GET CANDIDATE ID
+    // =====================================================
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const candidateId =
+        params.get("id");
+
+
+    // =====================================================
+    // BACK
+    // =====================================================
+
+    function goBack() {
+
+        window.history.back();
+
+    }
+
+
+    // =====================================================
+    // ESCAPE HTML
+    // =====================================================
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    // =====================================================
+    // LOAD PROFILE
+    // =====================================================
+
+    async function loadProfile() {
+
+        const content =
+            document.getElementById(
+                "content"
+            );
+
+
+        if (!candidateId) {
+
+            content.innerHTML = `
+
+                <div class="error">
+
+                    Candidate ID is missing.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+
+                    `${API_URL}/profile/${encodeURIComponent(candidateId)}`
+
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+
+                    data.message ||
+                    "Unable to load candidate profile."
+
+                );
+
+            }
+
+
+            const profile =
+                data.profile;
+
+
+            renderProfile(
+                profile
+            );
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Profile error:",
+                error
+            );
+
+
+            content.innerHTML = `
+
+                <div class="error">
+
+                    <strong>
+                        Unable to load candidate profile
+                    </strong>
+
+                    <br><br>
+
+                    ${escapeHtml(
+                        error.message
+                    )}
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+    // =====================================================
+    // RENDER PROFILE
+    // =====================================================
+
+    function renderProfile(
+        profile
+    ) {
+
+        const content =
+            document.getElementById(
+                "content"
+            );
+
+
+        const name =
+            profile.name ||
+            "Candidate";
+
+
+        const headline =
+            profile.headline ||
+            profile.professionalHeadline ||
+            "Candidate";
+
+
+        const location =
+            profile.location ||
+            "Location not specified";
+
+
+        const email =
+            profile.email ||
+            "Email not available";
+
+
+        const phone =
+            profile.phone ||
+            "Phone not available";
+
+
+        const about =
+            profile.about ||
+            "No information provided.";
+
+
+        const skills =
+            Array.isArray(
+                profile.skills
+            )
+                ? profile.skills
+                : [];
+
+
+        const education =
+            Array.isArray(
+                profile.education
+            )
+                ? profile.education
+                : [];
+
+
+        const initials =
+            name
+                .split(" ")
+                .filter(Boolean)
+                .map(
+                    word =>
+                        word[0]
+                )
+                .join("")
+                .substring(
+                    0,
+                    2
+                )
+                .toUpperCase();
+
+
+        let avatarHTML = `
+
+            <div class="avatar">
+
+                ${escapeHtml(
+                    initials
+                )}
+
+            </div>
+
+        `;
+
+
+        if (
+            profile.profilePhoto
+        ) {
+
+            avatarHTML = `
+
+                <div class="avatar">
+
+                    <img
+                        src="${escapeHtml(
+                            profile.profilePhoto
+                        )}"
+                        alt="Profile photo"
+                    >
+
+                </div>
+
+            `;
+
+        }
+
+
+        const skillsHTML =
+            skills.length
+
+                ? skills
+                    .map(
+                        skill => `
+
+                            <span class="skill">
+
+                                ${escapeHtml(
+                                    skill
+                                )}
+
+                            </span>
+
+                        `
+                    )
+                    .join("")
+
+                : `
+
+                    <div class="empty">
+
+                        No skills added.
+
+                    </div>
+
+                `;
+
+
+        const educationHTML =
+            education.length
+
+                ? education
+                    .map(
+                        item => {
+
+                            const degree =
+                                item.degree ||
+                                item.qualification ||
+                                item.title ||
+                                "Education";
+
+
+                            const institution =
+                                item.institution ||
+                                item.college ||
+                                item.school ||
+                                "";
+
+
+                            const year =
+                                item.year ||
+                                item.graduationYear ||
+                                "";
+
+
+                            return `
+
+                                <div class="education">
+
+                                    <div class="education-title">
+
+                                        ${escapeHtml(
+                                            degree
+                                        )}
+
+                                    </div>
+
+                                    <div class="education-details">
+
+                                        ${escapeHtml(
+                                            institution
+                                        )}
+
+                                        ${
+                                            year
+                                                ? " • " +
+                                                  escapeHtml(
+                                                      year
+                                                  )
+                                                : ""
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        }
+                    )
+                    .join("")
+
+                : `
+
+                    <div class="empty">
+
+                        No education details added.
+
+                    </div>
+
+                `;
+
+
+        let resumeHTML = `
+
+            <div class="empty">
+
+                No resume uploaded.
+
+            </div>
+
+        `;
+
+
+        if (
+            profile.resume
+        ) {
+
+            const resumePath =
+                profile.resume.path ||
+                profile.resume.url;
+
+
+            if (resumePath) {
+
+                const resumeURL =
+                    resumePath.startsWith(
+                        "http"
+                    )
+
+                        ? resumePath
+
+                        : `http://localhost:5000${resumePath}`;
+
+
+                resumeHTML = `
+
+                    <div class="resume-box">
+
+                        <div>
+
+                            <div class="resume-name">
+
+                                📄 ${
+                                    escapeHtml(
+                                        profile.resume.filename ||
+                                        "Resume"
+                                    )
+                                }
+
+                            </div>
+
+                        </div>
+
+                        <a
+                            class="resume-btn"
+                            href="${escapeHtml(
+                                resumeURL
+                            )}"
+                            target="_blank"
+                        >
+
+                            View Resume
+
+                        </a>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        content.innerHTML = `
+
+            <div class="profile-card">
+
+                <div class="profile-header">
+
+                    ${avatarHTML}
+
+                    <div>
+
+                        <div class="name">
+
+                            ${escapeHtml(
+                                name
+                            )}
+
+                        </div>
+
+                        <div class="headline">
+
+                            ${escapeHtml(
+                                headline
+                            )}
+
+                        </div>
+
+                        <div class="location">
+
+                            📍 ${escapeHtml(
+                                location
+                            )}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h2>
+                        Contact Information
+                    </h2>
+
+                    <div class="contact-grid">
+
+                        <div class="contact-item">
+
+                            <div class="contact-label">
+                                Email
+                            </div>
+
+                            <div class="contact-value">
+
+                                ${escapeHtml(
+                                    email
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-item">
+
+                            <div class="contact-label">
+                                Phone
+                            </div>
+
+                            <div class="contact-value">
+
+                                ${escapeHtml(
+                                    phone
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h2>
+                        About
+                    </h2>
+
+                    <div class="about">
+
+                        ${escapeHtml(
+                            about
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h2>
+                        Skills
+                    </h2>
+
+                    <div class="skills">
+
+                        ${skillsHTML}
+
+                    </div>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h2>
+                        Education
+                    </h2>
+
+                    <div class="education-list">
+
+                        ${educationHTML}
+
+                    </div>
+
+                </div>
+
+
+                <div class="section">
+
+                    <h2>
+                        Resume
+                    </h2>
+
+                    ${resumeHTML}
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    // =====================================================
+    // START
+    // =====================================================
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadProfile
+    );
+
+</script>
+
+</body>
+
+</html>
