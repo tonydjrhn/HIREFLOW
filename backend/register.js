@@ -479,7 +479,7 @@ if (form) {
 
                     },
 
-                    body: JSON.stringify({
+                             body: JSON.stringify({
 
                         name:
                             fullName.value.trim(),
@@ -488,7 +488,10 @@ if (form) {
                             email.value.trim(),
 
                         password:
-                            password.value
+                            password.value,
+
+                        role:
+                            document.querySelector("input[name='role']:checked").value
 
                     })
 
