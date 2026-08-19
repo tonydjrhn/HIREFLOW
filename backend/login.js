@@ -141,7 +141,7 @@ try {
     console.log("Sending login request...");
 
     const response = await fetch(
-        "http://localhost:5000/api/login",
+        "/api/login",
         {
             method: "POST",
 
