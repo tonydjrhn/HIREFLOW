@@ -6,6 +6,8 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 const User = require("./models/User");
+const Application = require("./models/Application");
+const Job = require("./models/Job");
 
 const app = express();
 
@@ -338,7 +340,71 @@ app.post("/api/login", async (req, res) => {
         });
 
     }
+app.get("/api/jobs", async (req, res) => {
+    try {
+        const jobs = await Job.find().sort({ createdAt: -1 });
+        return res.status(200).json({ success: true, jobs });
+    } catch (error) {
+        console.error("Get jobs error:", error);
+        return res.status(500).json({ success: false, jobs: [], message: "Unable to load jobs" });
+    }
+});
 
+app.post("/api/jobs", async (req, res) => {
+    try {
+        const { title, company, location, jobType, salary, experience, skills, description, recruiterId } = req.body;
+        if (!title || !company) {
+            return res.status(400).json({ success: false, message: "Title and company are required" });
+        }
+        const job = new Job({ title, company, location, jobType, salary, experience, skills, description, recruiterId });
+        await job.save();
+        return res.status(201).json({ success: true, job });
+    } catch (error) {
+        console.error("Create job error:", error);
+        return res.status(500).json({ success: false, message: "Unable to create job" });
+    }
+});
+
+app.put("/api/jobs/:id", async (req, res) => {
+    try {
+        const job = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        if (!job) {
+            return res.status(404).json({ success: false, message: "Job not found" });
+        }
+        return res.status(200).json({ success: true, job });
+    } catch (error) {
+        console.error("Update job error:", error);
+        return res.status(500).json({ success: false, message: "Unable to update job" });
+    }
+});
+
+app.post("/api/applications", async (req, res) => {
+    try {
+        const { candidateId, jobId, coverMessage } = req.body;
+        if (!candidateId || !jobId) {
+            return res.status(400).json({ success: false, message: "candidateId and jobId are required" });
+        }
+        const application = new Application({ candidateId, jobId, coverMessage: coverMessage || "" });
+        await application.save();
+        return res.status(201).json({ success: true, application });
+    } catch (error) {
+        if (error.code === 11000) {
+            return res.status(400).json({ success: false, message: "Already applied to this job" });
+        }
+        console.error("Create application error:", error);
+        return res.status(500).json({ success: false, message: "Unable to submit application" });
+    }
+});
+
+app.get("/api/applications/check/:candidateId/:jobId", async (req, res) => {
+    try {
+        const existing = await Application.findOne({ candidateId: req.params.candidateId, jobId: req.params.jobId });
+        return res.status(200).json({ success: true, applied: !!existing });
+    } catch (error) {
+        console.error("Check application error:", error);
+        return res.status(500).json({ success: false, applied: false });
+    }
+});
 });
 
 app.get("/api/health", (req, res) => {
